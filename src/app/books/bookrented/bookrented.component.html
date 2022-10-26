@@ -1,0 +1,153 @@
+<div>
+    <div class=" child inline-block-child">
+    <mat-form-field appearance="standard">
+        <mat-label>Filter Table</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
+      </mat-form-field>
+      
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+      
+          <!-- ID Column -->
+          <ng-container matColumnDef="trackId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> TrackID </th>
+            <td mat-cell *matCellDef="let row"> {{row.trackId}} </td>
+          </ng-container>
+        
+     
+    
+          <!----title-->
+          <ng-container matColumnDef="bookId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> BookID </th>
+           
+            <td mat-cell *matCellDef="let row"> {{row.bookId}} </td>
+          </ng-container>
+      
+          <!-- Progress Column -->
+          <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> StartDate </th>
+            <td mat-cell *matCellDef="let row"> {{row.startDate| date : "mediumDate"}} </td>
+          </ng-container>
+      
+          <!-- Name Column -->
+          <ng-container matColumnDef="expectedReturnDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ExpectedReturnDate </th>
+            <td mat-cell *matCellDef="let row"> {{row.expectedReturnDate| date : "mediumDate"}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="actualReturnDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ActualReturnDate </th>
+            <td mat-cell *matCellDef="let row"> {{row.actualReturnDate| date : "mediumDate"}} </td>
+          </ng-container>
+       
+          <ng-container  matColumnDef="update">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+            <td mat-cell *matCellDef="let row"> <button (click)="updatevalue(row)">Return Book</button> </td>
+          </ng-container>
+      
+          <!-- Fruit Column -->
+          <ng-container matColumnDef="personId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> PersonId </th>
+            <td mat-cell *matCellDef="let row"> {{row.personId}} </td>
+          </ng-container>
+          
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+          </tr>
+        </table>
+      
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+      </div>
+      </div>
+
+
+      <!-------------------------------------------->
+      <div class=" child inline-block-child1" ><mat-toolbar color="primary">
+        <span class="fill-remaining-space">Issue Book To Person</span>
+      </mat-toolbar>
+ 
+      <div class="container"   > 
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup!.value)" class="form">
+    <!----------------->
+          <!-- <mat-form-field class="form-element">
+            <input  type="number" matInput  placeholder="bookId" formControlName="bookId">
+            <mat-error *ngIf="!formGroup!.controls['bookId'].valid && formGroup!.controls['bookId'].touched">
+                {{    getErrorTitle() }}               
+            </mat-error> -->
+            <mat-form-field class="form-element">
+                <mat-label>select Book</mat-label>
+                <mat-select formControlName="bookId">
+                  <mat-option *ngFor="let brand of allbook" [value]="brand.bookId">
+                    {{ brand.bookId }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="bookId.hasError('required')">Please choose a book</mat-error>
+              </mat-form-field> 
+          
+           
+
+
+            <!----------------->
+          <!-- </mat-form-field> -->
+     
+          <!-- <mat-form-field class="form-element">
+            <input type="number" matInput placeholder="personId" formControlName="personId">
+            <mat-error *ngIf="!formGroup!.controls['personId'].valid && formGroup!.controls['personId'].touched">
+             
+              {{  getDiscriptionError()}}
+            </mat-error>
+          </mat-form-field> -->
+
+
+          <mat-form-field class="form-element">
+            <mat-label>select person</mat-label>
+            <mat-select formControlName="personId">
+              <mat-option *ngFor="let brand of allperson" [value]="brand.personId">
+                {{ brand.personId }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="personId.hasError('required')">Please choose a person</mat-error>
+          </mat-form-field> 
+
+
+
+
+          <!------------------------------->
+      
+          <mat-form-field class="form-element">
+            <input type="date" matInput placeholder="startDate" formControlName="startDate">
+            <mat-error *ngIf="!formGroup!.controls['startDate'].valid && formGroup!.controls['startDate'].touched">
+           {{ getPagecountError()}}
+            </mat-error>
+          </mat-form-field>
+         
+          <mat-form-field class="form-element">
+            <input type="date" matInput placeholder="expectedReturnDate" formControlName="expectedReturnDate">
+            <!-- <mat-hint>Choose a password of at least eight characters, one uppercase letter and one number</mat-hint> -->
+            <mat-error *ngIf="!formGroup!.controls['expectedReturnDate'].valid && formGroup!.controls['expectedReturnDate'].touched">
+              {{ getPublishedError() }}
+            </mat-error>
+          </mat-form-field>
+    
+          
+         <!-- <mat-form-field  class="form-element">
+            <input type="date" matInput placeholder="actualReturnDate" formControlName="actualReturnDate">
+            <mat-error *ngIf="!formGroup!.controls['actualReturnDate'].valid && formGroup!.controls['actualReturnDate'].touched">
+              {{  getAvailableStockError()}}
+            </mat-error>
+          </mat-form-field> -->
+      
+         
+          <div class="form-element">
+            <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup!.valid">Submit Form</button>
+          </div>
+      
+        </form>
+      </div>
+    </div>
+    
