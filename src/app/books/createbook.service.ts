@@ -38,7 +38,7 @@ export class CreatebookService {
       }
       AssignBook(postData:any){
         console.log(postData.bookId,postData.authorid );
-        return this.http.put('http://localhost:8080/author/'+postData.bookId+'/book/'+postData.authorid,postData );
+        return this.http.put('http://localhost:8080/author/'+postData.bookId.bookId+'/book/'+postData.authorid.authorid,postData );
       }
   RenteBook(postData:any){
     console.log(postData)

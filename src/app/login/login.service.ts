@@ -7,8 +7,11 @@ import { Observable, Subject } from 'rxjs';
 })
 export class LoginService  {
 
-private  logginstatus:boolean = false;
+private  logginstatus:boolean = true;
 isAuthenticated() {
+  this.logginstatus = sessionStorage.getItem('logginstatus') === 'Y' ? true : false ;
+  // this.logginstatus = localStorage.getItem('logginstatus') === 'Y' ? true : false ;
+  // console.log(sessionStorage.getItem('logginstatus'))
   const promise = new Promise(
     (resolve, reject) => {
       setTimeout(() => {
@@ -18,13 +21,17 @@ isAuthenticated() {
   );
   return promise;
 }
-
+ 
 login() {
   this.logginstatus = true;
+  sessionStorage.setItem('logginstatus', 'Y');
+  // localStorage.setItem('logginstatus', 'Y');
 }
 
 logout() {
-  this.logginstatus = false;
+  // this.logginstatus = false;
+  sessionStorage.setItem('logginstatus', 'N');
+  // localStorage.setItem('logginstatus', 'N');
 }
 // islogin(data:boolean)
 // {

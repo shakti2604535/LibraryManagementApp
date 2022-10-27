@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective, ValidatorFn, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -47,7 +47,7 @@ export class PersonComponent implements OnInit {
       'name': [null, [Validators.required,Validators.minLength(5),Validators.maxLength(20)]],
       'address': [null, [Validators.required,Validators.minLength(5)]],
       // 'pageCount': [null, [Validators.required,Validators.min(50) ]],
-      'dob': [null, [Validators.required,]],
+      'dob': [null, [Validators.required,this.RangeValidator()]],
       // 'availableStock': [null, [Validators.required,Validators.min(2)]],
       'validate': ''
     });
@@ -67,7 +67,8 @@ export class PersonComponent implements OnInit {
   }
   getPublishedError() {
     return this.formGroup!.get('dob')!.hasError('required') ? 'Enter Valid Date' :
-    'Enter Valid';
+    this.formGroup!.get('dob')!.hasError('startdate') ? 'Age should be greater then ten' :'';
+  
   }
   // getPagecountError() {
   //   return this.formGroup!.get('pageCount')!.hasError('required') ? 'Field is required' :
@@ -92,7 +93,7 @@ export class PersonComponent implements OnInit {
       'name': [row.personName, [Validators.required,Validators.minLength(5),Validators.maxLength(20)]],
       'address': [row.personAddress, [Validators.required,Validators.minLength(5)]],
       // 'pageCount': [null, [Validators.required,Validators.min(50) ]],
-      'dob': [curr, [Validators.required,]],
+      'dob': [curr, [Validators.required,this.RangeValidator()]],
       // 'availableStock': [null, [Validators.required,Validators.min(2)]],
       'validate': ''
     });
@@ -165,5 +166,26 @@ if (this.myForm) {
   }
 
 
+
   ////////////////////////////////////////////////////////////////
+
+
+
+  RangeValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+       
+       const date = new Date();
+       const date2 =  new Date(control.value);
+  
+      //  console.log(date2.getDate())
+      //  console.log( control.value !== null);
+      //  console.log(date2.getFullYear(),date.getFullYear() )
+        if ( date.getFullYear() - date2.getFullYear() <12 ) {
+          console.log(date );
+            return { 'startdate': true };
+  
+        }
+        return null;
+    };
+  }
 }

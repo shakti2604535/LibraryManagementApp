@@ -7,11 +7,11 @@
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup!.value)" class="form">
   
       <mat-form-field class="form-element">
-        <input  type="text" matInput  placeholder="title" formControlName="title">
+        <input  name="title" type="text" matInput  placeholder="title" formControlName="title" autocomplete="title">
         <mat-error *ngIf="!formGroup!.controls['title'].valid && formGroup!.controls['title'].touched">
             {{    getErrorTitle() }}               
         </mat-error>
-      </mat-form-field>
+      </mat-form-field>  
  
       <mat-form-field class="form-element">
         <input type="text" matInput placeholder="description" formControlName="description">
@@ -91,10 +91,7 @@
           <!-- Progress Column -->
           <ng-container matColumnDef="Discription">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Discription </th>
-            <td mat-cell *matCellDef="let row"  [ngClass]="{
-                'positive' : row.availableStock > 0,
-                'negative' : row.availableBalance <= 0
-             }"> {{row.description}} </td>
+            <td mat-cell *matCellDef="let row"  > {{row.description}} </td>
           </ng-container>
       
           <!-- Name Column -->
@@ -145,7 +142,7 @@
         <form [formGroup]="assignvalue" #commentNgForm="ngForm" (ngSubmit)="onSubmitAssign(assignvalue!.value)" class="form">
       
         
-         <mat-form-field class="form-element">
+         <!-- <mat-form-field class="form-element">
             <mat-label>select Author</mat-label>
             <mat-select formControlName="authorid">
               <mat-option *ngFor="let brand of author" [value]="brand.authorid">
@@ -153,9 +150,32 @@
               </mat-option>
             </mat-select>
             <mat-error *ngIf="authorid.hasError('required')">Please choose a author</mat-error>
-          </mat-form-field> 
-
+          </mat-form-field>  -->
           <mat-form-field class="form-element">
+            <mat-label>select Author</mat-label>
+            <input matInput type="text" [matAutocomplete]="auto"  formControlName="authorid"/>
+                <mat-autocomplete #auto ="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let brand of filteredOptions " [value]="brand">
+                {{ brand.authorName }}
+              </mat-option>
+            </mat-autocomplete>
+        
+            <mat-error *ngIf="authorid.hasError('required')">Please choose a author</mat-error>
+          </mat-form-field> 
+          <!--------------------------------------------------->
+          <mat-form-field class="form-element">
+            <mat-label>select Book</mat-label>
+            <input matInput type="text" [matAutocomplete]="auto1"  formControlName="bookId"/>
+                <mat-autocomplete #auto1 ="matAutocomplete" [displayWith]="displayFn1">
+              <mat-option *ngFor="let brand1 of filteredOptions1" [value]="brand1">
+                {{ brand1.title }}
+              </mat-option>
+            </mat-autocomplete>
+        
+            <mat-error *ngIf="authorid.hasError('required')">Please choose a Book</mat-error>
+          </mat-form-field> 
+<!------------------------------------------------->
+          <!-- <mat-form-field class="form-element">
             <mat-label>select Book</mat-label>
             <mat-select formControlName="bookId">
               <mat-option *ngFor="let brand of posts" [value]="brand.bookId ">
@@ -163,7 +183,7 @@
               </mat-option>
             </mat-select>
             <mat-error *ngIf="bookId.hasError('required')">Please choose a book</mat-error>
-          </mat-form-field> 
+          </mat-form-field>  -->
       
          
       

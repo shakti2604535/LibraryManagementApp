@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, ValidatorFn, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -58,8 +58,8 @@ allperson:any;
     this.formGroup = this.formBuilder.group({
       'bookId': [null, [Validators.required]],
       'personId': [null, [Validators.required]],
-      'startDate': [null, [Validators.required]],
-      'expectedReturnDate': [null, [Validators.required,]],
+      'startDate': [null, [Validators.required,this.RangeValidator()]],
+      'expectedReturnDate': [null, [Validators.required,this.ExpectedRangeValidator()]],
       'actualReturnDate': [null,],
       'validate': ''
     });
@@ -82,12 +82,12 @@ allperson:any;
     'Enter Valid';
   }
   getPublishedError() {
-    return this.formGroup!.get('startDate')!.hasError('required') ? 'Enter Valid Date' :
-    'Enter Valid';
+    return this.formGroup!.get('startDate')!.hasError('required') ? 'Field is required' :
+    this.formGroup!.get('startDate')!.hasError('startdate') ? 'Enter today date' :'';
   }
   getPagecountError() {
     return this.formGroup!.get('expectedReturnDate')!.hasError('required') ? 'Enter Valid Date' :
-    'Enter Valid';
+    this.formGroup!.get('expectedReturnDate')!.hasError('expectdate') ? 'Enter future date' :'';
   }
   getAvailableStockError() {
     return this.formGroup!.get('actualReturnDate')!.hasError('required') ? 'Enter Valid Date' :
@@ -174,5 +174,79 @@ updatevalue(row:any){
       this.dataSource.paginator.firstPage();
     }
   }
+
+////////////////////////////////////
+
+RangeValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
+     
+     const date = new Date();
+     const date2 =  new Date(control.value);
+
+    //  console.log(date2.getDate())
+    //  console.log( control.value !== null);
+    //  console.log(date2.getFullYear(),date.getFullYear() )
+      if ( date2.getDate() != date.getDate() ) {
+        console.log(date );
+          return { 'startdate': true };
+
+      }
+      return null;
+  };
+}
+
+  ExpectedRangeValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+       
+       const date = new Date();
+       const date2 =  new Date(control.value);
+  
+      //  console.log(date2.getDate())
+      //  console.log( control.value !== null);
+      //  console.log(date2.getFullYear(),date.getFullYear() )
+       if ( date2.getFullYear() < date.getFullYear() ) {
+        return { 'expectdate': true };
+       }
+       else if (date2.getFullYear() > date.getFullYear()){
+
+        return null;
+      
+       }
+
+       if(date2.getMonth() < date.getMonth() )
+       {
+        return { 'expectdate': true };
+       }
+       if(date2.getDate() < date.getDate())
+       {
+        return { 'expectdate': true };
+       }
+       return null;
+    };
+
+
+ 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

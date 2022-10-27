@@ -42,7 +42,7 @@
        
           <ng-container  matColumnDef="update">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
-            <td mat-cell *matCellDef="let row"> <button (click)="updatevalue(row)">Return Book</button> </td>
+            <td mat-cell *matCellDef="let row"> <button  *ngIf="row.actualReturnDate === null" (click)="updatevalue(row)">Return Book</button> </td>
           </ng-container>
       
           <!-- Fruit Column -->
@@ -122,7 +122,7 @@
           <mat-form-field class="form-element">
             <input type="date" matInput placeholder="startDate" formControlName="startDate">
             <mat-error *ngIf="!formGroup!.controls['startDate'].valid && formGroup!.controls['startDate'].touched">
-           {{ getPagecountError()}}
+           {{ getPublishedError()}}
             </mat-error>
           </mat-form-field>
          
@@ -130,7 +130,7 @@
             <input type="date" matInput placeholder="expectedReturnDate" formControlName="expectedReturnDate">
             <!-- <mat-hint>Choose a password of at least eight characters, one uppercase letter and one number</mat-hint> -->
             <mat-error *ngIf="!formGroup!.controls['expectedReturnDate'].valid && formGroup!.controls['expectedReturnDate'].touched">
-              {{ getPublishedError() }}
+              {{ getPagecountError()}}
             </mat-error>
           </mat-form-field>
     

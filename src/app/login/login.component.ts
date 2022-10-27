@@ -39,9 +39,10 @@ validatepassword:string='';
     return this.form1.get('name');
   }
   ngOnInit(): void {
+    this.loginservice.logout();
   }
   submit() {
-     
+    
     if(this.username?.value && this.password?.value) {
               console.log(this.username)
    this.loginservice.fetchposts(this.username?.value).subscribe((data)=>{
@@ -50,6 +51,8 @@ validatepassword:string='';
     // console.log(data.emailId) ;
     
 
+// this.validateuser = data.emailId;
+// this.validatepassword = data.password;
 
   this.validateuser = Object.values(data)[1],
   this.validatepassword = Object.values(data)[2]
@@ -96,7 +99,7 @@ else  {
     this.iscreated = true;
     // console.log('hi')
   }
-  submitted() {
+  submitted() 
     {
       // console.log(this.form1.value);
       if(this.form1.valid)
@@ -113,7 +116,7 @@ else  {
       })
       }
     }
-  }
+  
 }
 
 
