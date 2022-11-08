@@ -61,7 +61,7 @@ validatepassword:string='';
    
    console.log(this.validatepassword,this.validateuser,this.loginstatus)
    this.loginservice.login();
-     this.route.navigate(['home'])
+     this.route.navigate(['home/dashboard'])
     //  this.loginservice.islogin(true);
   }
   else{

@@ -18,7 +18,7 @@ export class PersonComponent implements OnInit {
   post: any = '';
 
 
-  displayedColumns: string[] = ['Id', 'personDob', 'personName', 'personAddress','RentedBooks','Overdue','update'];
+  displayedColumns: string[] = ['personId', 'personDob', 'personName', 'personAddress','RentedBooks','Overdue','update'];
   dataSource!: MatTableDataSource<any>;
   posts:any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -31,12 +31,12 @@ export class PersonComponent implements OnInit {
       // console.log(data);
       this.posts = data;
    
-      console.log(data.bookId)
+      console.log(data)
       // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.posts);
-
-      this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      
     });
     this.createForm();
   }

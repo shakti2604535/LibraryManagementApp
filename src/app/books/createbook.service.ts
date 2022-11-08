@@ -15,7 +15,10 @@ export class CreatebookService {
   }
 
 
+ ftechbookbyid(data:any){
+  return this.http.get('http://localhost:8080/books//book/'+data);
 
+ }
   fetchposts(){
    
     
@@ -30,7 +33,7 @@ export class CreatebookService {
     fetchrentedBook(){
    
     
-      return  this.http.get('http://localhost:8080/booktrack/detail');
+      return  this.http.get('http://localhost:8080/booktrack/detailed');
       }
 
       returnissuebook(postData:any){
@@ -43,6 +46,18 @@ export class CreatebookService {
   RenteBook(postData:any){
     console.log(postData)
    return  this.http.post('http://localhost:8080/booktrack/assignbook',postData)
+  }
+  RentedBookByID(data:any){
+    return this.http.get('http://localhost:8080/booktrack/book/'+data)
+  }
+
+  paginatorapi(offset:any, pagesize:any)
+  {
+      return this.http.get('http://localhost:8080/books/bookscount/'+offset+'/'+pagesize);
+  }
+  paginatorapiusername(offset:any, pagesize:any,username:any)
+  {
+      return this.http.get('http://localhost:8080/books/booksbyname/'+offset+'/'+pagesize+'/'+username);
   }
 
 }

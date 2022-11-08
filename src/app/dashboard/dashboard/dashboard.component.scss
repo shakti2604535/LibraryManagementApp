@@ -5,6 +5,7 @@ table {
   .mat-form-field {
     font-size: 14px;
     width: 20%;
+
   }
   
   
@@ -22,5 +23,17 @@ table {
     background-color: red($color: #000000);
   }
   .negative{
-    background-color:  #F32013;
+    // background:  #F32013;
+    text-decoration: #F32013;
+   color: #F32013;
+
+
   }
+  .positive{
+    color: green
+  }
+  .changecursor:hover{
+    cursor: pointer;
+  }
+
+ 

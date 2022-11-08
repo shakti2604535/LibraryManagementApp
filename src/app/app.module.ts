@@ -13,6 +13,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HomeModule } from './home/home.module';
 import { AuthGuard } from 'src/auth.guard';
+import { TryresolveGuard } from './tryresolve.guard';
+import { SecondGuard } from './second.guard';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,7 @@ import { AuthGuard } from 'src/auth.guard';
    
     
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard,TryresolveGuard,SecondGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

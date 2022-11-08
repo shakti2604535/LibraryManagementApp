@@ -4,9 +4,10 @@ import { CreatebookComponent } from './createbook/createbook.component';
 import { CreatebookRoutingModule } from './createbook/createbook-routing.module';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BookrentedComponent } from './bookrented/bookrented.component';
+import { SecondGuard } from '../second.guard';
 
 
 
@@ -17,13 +18,13 @@ import { BookrentedComponent } from './bookrented/bookrented.component';
   ],
   imports: [
     CommonModule,CreatebookRoutingModule,
-    RouterModule,MaterialModule,ReactiveFormsModule,HttpClientModule
+    RouterModule,MaterialModule,ReactiveFormsModule,HttpClientModule,FormsModule
   ],
   exports:[
     CreatebookComponent
   ],
   providers:[
-    DatePipe
+    DatePipe,SecondGuard
   ]
 })
 export class BooksModule { }

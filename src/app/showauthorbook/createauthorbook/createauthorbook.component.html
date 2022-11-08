@@ -1,0 +1,89 @@
+<mat-toolbar color="primary">
+<span class="fill-remaining-space">{{heading}}</span>
+</mat-toolbar>
+
+<div class="container"   > 
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup!.value)" class="form">
+
+    <mat-form-field class="form-element">
+      <input  type="text" matInput  placeholder="title" formControlName="title" >
+      <mat-error *ngIf="!formGroup!.controls['title'].valid && formGroup!.controls['title'].touched">
+          {{    getErrorTitle() }}               
+      </mat-error>
+    </mat-form-field>  
+
+    <mat-form-field class="form-element">
+      <input type="text" matInput placeholder="description" formControlName="description">
+      <mat-error *ngIf="!formGroup!.controls['description'].valid && formGroup!.controls['description'].touched">
+       
+        {{  getDiscriptionError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-element">
+      <input type="number" matInput placeholder="pageCount" formControlName="pageCount">
+      <mat-error *ngIf="!formGroup!.controls['pageCount'].valid && formGroup!.controls['pageCount'].touched">
+     {{ getPagecountError()}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-element">
+      <input type="date" matInput placeholder="publisheddate" formControlName="publishDate">
+      <mat-error *ngIf="!formGroup!.controls['publishDate'].valid && formGroup!.controls['publishDate'].touched">
+        {{ getPublishedError() }}
+      </mat-error>
+    </mat-form-field> 
+
+
+    <!-- <mat-form-field class="form-element">
+        <input matInput  [matDatepicker]="picker1" placeholder="mm/dd/yyyy" formControlName="publishDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <mat-error *ngIf="!formGroup!.controls['publishDate'].valid && formGroup!.controls['publishDate'].touched">
+            {{ getPublishedError()}}
+          </mat-error>
+      </mat-form-field> -->
+    
+
+
+   <mat-form-field class="form-element">
+      <input type="number" matInput placeholder="availableStock" formControlName="availableStock">
+      <mat-error *ngIf="!formGroup!.controls['availableStock'].valid && formGroup!.controls['availableStock'].touched">
+        {{  getAvailableStockError()}}
+      </mat-error>
+    </mat-form-field>
+
+
+
+   
+
+
+
+
+    <mat-form-field  *ngIf="update" class="form-element">
+        <input type="text" matInput placeholder="authorid" formControlName="authorid">
+        <mat-error *ngIf="authorid.hasError('required')">Please choose a author</mat-error>
+      </mat-form-field>
+
+    <mat-form-field  *ngIf="!update" class="form-element">
+        <mat-label>select Author</mat-label>
+        <input matInput type="text" [matAutocomplete]="auto"  formControlName="authorid"/>
+            <mat-autocomplete #auto ="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let brand of filteredOptions " [value]="brand">
+            {{ brand.authorName }}
+          </mat-option>
+        </mat-autocomplete>
+    
+        <mat-error *ngIf="authorid.hasError('required')">Please choose a author</mat-error>
+      </mat-form-field> 
+  
+
+   
+
+    <div class="form-element">
+      <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup!.valid">{{button}}</button>
+    </div>
+    <!-- <button (click)="resetit()" class="form-element" color="warn">Reset</button> -->
+  </form>
+  <button (click)="resetit()" class="Reset">Reset</button>
+</div>

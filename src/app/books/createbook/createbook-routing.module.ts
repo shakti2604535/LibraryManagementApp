@@ -6,7 +6,10 @@ import { CreatebookComponent } from './createbook.component';
 
 
 const routes: Routes = [
-  {path:'',component:CreatebookComponent},
+  {path:'',component:CreatebookComponent,children:[
+    {path:':id',component:CreatebookComponent}
+  ]},
+
  
 ];
 

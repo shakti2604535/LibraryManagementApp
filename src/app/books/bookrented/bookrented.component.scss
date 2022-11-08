@@ -49,6 +49,27 @@
     width: 35%;
    
     }
+    .add{
+        float: right;
+        width: 180px;
+        background: none;
+        border: 1px solid green;
+        font-size: 23px;
+        // padding: 10px 20px;
+        font-family: "montserrat";
+        cursor: pointer;
+        // margin: 10px;
+        transition: 0.8s;
+        position: relative;
+        overflow: hidden;
+        margin: 20px;
+        height: 40px;
+        
+    
+      }
+      .add:hover{
+        background-color: green;
+      }
     .inline-block-child {
       float: left;
      margin-right: 10px;

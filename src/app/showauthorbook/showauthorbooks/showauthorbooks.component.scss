@@ -1,0 +1,43 @@
+table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 20%;
+  }
+  
+  
+  .add{
+    float: right;
+    width: 180px;
+    background: none;
+    border: 1px solid green;
+    font-size: 23px;
+    // padding: 10px 20px;
+    font-family: "montserrat";
+    cursor: pointer;
+    // margin: 10px;
+    transition: 0.8s;
+    position: relative;
+    overflow: hidden;
+    margin: 20px;
+    height: 40px;
+    
+
+  }
+  .add:hover{
+    background-color: green;
+  }
+  .th-center{
+    text-align: center;
+  }
+  .th-left{
+    text-align: left;
+  }
+  .th-right{
+    text-align: right;
+  }
+  .changecursor:hover{
+    cursor: pointer;
+  }
