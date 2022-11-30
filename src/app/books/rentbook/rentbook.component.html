@@ -1,0 +1,123 @@
+<div  (click)="nostockreset()" class=" child inline-block-child1" ><mat-toolbar color="primary">
+    <span class="fill-remaining-space">Issue Book To Person</span>
+  </mat-toolbar>
+
+  <div class="container"   > 
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup!.value)" class="form">
+<!----------------->
+      <!-- <mat-form-field class="form-element">
+        <input  type="number" matInput  placeholder="bookId" formControlName="bookId">
+        <mat-error *ngIf="!formGroup!.controls['bookId'].valid && formGroup!.controls['bookId'].touched">
+            {{    getErrorTitle() }}               
+        </mat-error> -->
+        <!-- <mat-form-field class="form-element">
+            <mat-label>select Book</mat-label>
+            <mat-select formControlName="bookId">
+              <mat-option *ngFor="let brand of allbook" [value]="brand.bookId">
+                {{ brand.title }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="bookId.hasError('required')">Please choose a book</mat-error>
+          </mat-form-field>  -->
+      <!----------------------------->
+      <mat-form-field class="form-element">
+        <mat-label>Select Book</mat-label>
+        <input matInput type="text" [matAutocomplete]="auto1"  formControlName="bookId"/>
+            <mat-autocomplete #auto1 ="matAutocomplete" [displayWith]="displayFn1">
+          <mat-option *ngFor="let brand of filteroption1" [value]="brand">
+            {{ brand.title }}
+          </mat-option>
+        </mat-autocomplete>
+    
+        <mat-error *ngIf="bookId.hasError('required')">Please choose a book</mat-error>
+      </mat-form-field> 
+       
+
+
+        <!----------------->
+      <!-- </mat-form-field> -->
+ 
+      <!-- <mat-form-field class="form-element">
+        <input type="number" matInput placeholder="personId" formControlName="personId">
+        <mat-error *ngIf="!formGroup!.controls['personId'].valid && formGroup!.controls['personId'].touched">
+         
+          {{  getDiscriptionError()}}
+        </mat-error>
+      </mat-form-field> -->
+
+
+      <!-- <mat-form-field class="form-element">
+        <mat-label>select person</mat-label>
+        <mat-select formControlName="personId">
+          <mat-option *ngFor="let brand of allperson" [value]="brand.personId">
+            {{ brand.personName }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="personId.hasError('required')">Please choose a person</mat-error>
+      </mat-form-field>  -->
+<!---------------------->
+      <mat-form-field class="form-element">
+        <mat-label>Select Person</mat-label>
+        <input matInput type="text" [matAutocomplete]="auto"  formControlName="personId"/>
+            <mat-autocomplete #auto ="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let brand of filteroption" [value]="brand">
+            {{ brand.personName }}
+          </mat-option>
+        </mat-autocomplete>
+    
+        <mat-error *ngIf="personId.hasError('required')">Please choose a person</mat-error>
+      </mat-form-field> 
+
+
+      <!------------------------------->
+  
+      <!-- <mat-form-field class="form-element">
+        <input type="date" matInput placeholder="startDate" formControlName="startDate">
+        <mat-error *ngIf="!formGroup!.controls['startDate'].valid && formGroup!.controls['startDate'].touched">
+       {{ getPublishedError()}}
+        </mat-error>
+      </mat-form-field> -->
+
+      <mat-form-field class="form-element">
+        <input matInput  [matDatepicker]="picker1" placeholder="mm/dd/yyyy"  min="{{currentdate | date:'yyyy-MM-dd'}}" max="{{currentdate | date:'yyyy-MM-dd'}}"  formControlName="startDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <mat-error *ngIf="!formGroup!.controls['startDate'].valid && formGroup!.controls['startDate'].touched">
+            {{ getPublishedError()}}
+          </mat-error>
+      </mat-form-field> 
+     
+      <!-- <mat-form-field class="form-element">
+        <input type="date" matInput placeholder="expectedReturnDate" formControlName="expectedReturnDate">
+        <mat-error *ngIf="!formGroup!.controls['expectedReturnDate'].valid && formGroup!.controls['expectedReturnDate'].touched">
+          {{ getPagecountError()}}
+        </mat-error>
+      </mat-form-field>
+ -->
+       <mat-form-field class="form-element">
+        <input matInput  [matDatepicker]="picker2" placeholder="mm/dd/yyyy"  min="{{currentdate | date:'yyyy-MM-dd'}}" formControlName="expectedReturnDate">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+        <mat-error *ngIf="!formGroup!.controls['expectedReturnDate'].valid && formGroup!.controls['expectedReturnDate'].touched">
+            {{ getPagecountError()}}
+          </mat-error>
+      </mat-form-field>
+    
+     <!-- <mat-form-field  class="form-element">
+        <input type="date" matInput placeholder="actualReturnDate" formControlName="actualReturnDate">
+        <mat-error *ngIf="!formGroup!.controls['actualReturnDate'].valid && formGroup!.controls['actualReturnDate'].touched">
+          {{  getAvailableStockError()}}
+        </mat-error>
+      </mat-form-field> -->
+  
+     
+      <div class="form-element">
+        <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup!.valid">Submit Form</button>
+      </div>
+  
+    </form>
+<p *ngIf="nostock">Error No Stock Available </p>
+<p *ngIf="wrongval">Error  BOOK OR PERSON NOT  EXIST </p>
+<button (click)="resetit()" class="Reset">Reset</button>
+  </div>
+</div>

@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MaterialModule } from './material.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { HomeModule } from './home/home.module';
 import { AuthGuard } from 'src/auth.guard';
 import { TryresolveGuard } from './tryresolve.guard';
 import { SecondGuard } from './second.guard';
+import { SendrequestInterceptor } from './sendrequest.interceptor';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { SecondGuard } from './second.guard';
    
     
   ],
-  providers: [AuthGuard,TryresolveGuard,SecondGuard],
+  providers: [AuthGuard,TryresolveGuard,SecondGuard,{provide: HTTP_INTERCEPTORS,useClass:SendrequestInterceptor,multi:true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

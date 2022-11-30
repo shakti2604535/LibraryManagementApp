@@ -1,14 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { AuthorService } from '../author.service';
 
 @Component({
   selector: 'app-author',
   templateUrl: './author.component.html',
-  styleUrls: ['./author.component.scss']
+  styleUrls: ['./author.component.scss'],
+  
 })
 export class AuthorComponent implements OnInit {
   @ViewChild(FormGroupDirective) myForm:any;
@@ -18,13 +20,13 @@ export class AuthorComponent implements OnInit {
 
 
 
-  displayedColumns: string[] = ['authorId', 'authorName', 'AllBooks', 'outofstocknook','update'];
+  displayedColumns: string[] = [ 'authorName', 'AllBooks', 'outofstocknook','update'];
   dataSource!: MatTableDataSource<any>;
   posts:any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private service:AuthorService,private formBuilder: FormBuilder) {
+  constructor(private service:AuthorService,private formBuilder: FormBuilder,private route :Router) {
   }
   ngOnInit(){
     this.service.fetchposts().subscribe((data:any) => {
@@ -86,6 +88,13 @@ export class AuthorComponent implements OnInit {
       });
     })
    
+  }
+  navigatetoupdate(){
+    this.route.navigate(['home/addauthor/create'])
+      }
+  naviagtetobook(id:any){
+
+    this.route.navigate(['home/addauthor/update/'+id]);
   }
   //////////////////
   onSubmit(post: any) {

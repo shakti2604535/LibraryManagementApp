@@ -1,29 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, ValidatorFn, Validators } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthorService } from 'src/app/author/author.service';
+import { filter, map, toArray } from 'rxjs';
 import { PersonService } from 'src/app/person/person.service';
 import { CreatebookService } from '../createbook.service';
 
 @Component({
-  selector: 'app-bookrented',
-  templateUrl: './bookrented.component.html',
-  styleUrls: ['./bookrented.component.scss']
+  selector: 'app-rentbook',
+  templateUrl: './rentbook.component.html',
+  styleUrls: ['./rentbook.component.scss']
 })
-export class BookrentedComponent implements OnInit {
+export class RentbookComponent implements OnInit {
 
- 
-
-  displayedColumns: string[] = [ 'bookId', 'startDate', 'expectedReturnDate','actualReturnDate','personId','update'];
-  dataSource!: MatTableDataSource<any>;
   posts:any;
   filteroption:any;
   filteroption1:any;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+
   id:any;
   currentdate :any = new Date();
   constructor(private formBuilder: FormBuilder, private router:Router,private service:CreatebookService,private service1:PersonService,private route :ActivatedRoute,private navig:Router) { }
@@ -32,7 +24,7 @@ export class BookrentedComponent implements OnInit {
   formGroup!: FormGroup;
   titleAlert: string = 'This field is required';
   post: any = '';
-allbook:any;
+allbook:any ;
 allperson:any;
 
   ngOnInit() {
@@ -42,33 +34,55 @@ allperson:any;
   if(this.id)
   {  
     console.log(this.route.snapshot.data['data'])
-    console.log(this.route.snapshot.data)
+   let  val = this.route.snapshot.data['data']
+    console.log(val)
     // this.service.RentedBookByID(+this.id).subscribe((val)=>{
-    if(this.route.snapshot.data['data'] != null)
+    if(this.route.snapshot.data['data'])
     {
     this.createForm();
-    this.posts = this.route.snapshot.data['data'];
    
-    // console.log( typeof this.posts[0].publishDate)
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(this.posts);
-       this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+  
        this.service.fetchposts().subscribe((val)=>{
+      
                  this.allbook = val;
                  this.filteroption1 = val;
+                 this.posts = this.route.snapshot.data['data'];
+             
+                 console.log(this.id)
+                this.filteroption1 = this.filteroption1.filter((val1:any ) => val1.bookId === +this.id )
+                if(this.filteroption1.length === 0)
+                {
+                  this.navig.navigate(['home/booktrack'])
+                }
+                 console.log(this.filteroption1)
+                  this.formGroup = this.formBuilder.group({
+                    'bookId': [this.filteroption1[0], [Validators.required]],
+                    'personId': [null, [Validators.required]],
+                    'startDate': [null, [Validators.required,this.RangeValidator()]],
+                    'expectedReturnDate': [null, [Validators.required,this.ExpectedRangeValidator()]],
+                    'actualReturnDate': [null,],
+                    'validate': ''
+                  });
+                  this.formGroup.get('bookId')?.valueChanges.subscribe((res1)=>{
+              
+                    this.filterdata1(res1);
+                  })
+                  this.formGroup.get('personId')?.valueChanges.subscribe((res1)=>{
+              
+                    this.filterdata(res1);
+                  })
       })
       this.service1.fetchposts().subscribe((val)=>{
+        
         this.allperson = val;
         this.filteroption =val;
       })
     }
     else{
-      // console.log('hello')
-   this.navig.navigate(['home/dashboard'])
+   this.navig.navigate(['home/booktrack'])
     }
     // })
-       
+   
     // this.formGroup = this.formBuilder.group({
     //   'bookId': [+this.id, [Validators.required]],
     //   'personId': [null, [Validators.required]],
@@ -80,19 +94,17 @@ allperson:any;
   }
   else{
     this.service.fetchrentedBook().subscribe((data:any) => {
-      console.log(data);
+    
+      // console.log(234)
       this.posts = data;
    
-      // console.log( typeof this.posts[0].publishDate)
-      // Assign the data to the data source for the table to render
-      this.dataSource = new MatTableDataSource(this.posts);
+      // .pipe(filter((data:any)=>data.bookId > 25),toArray())
+      this.service.fetchposts().pipe(map((data:any) => data.filter((d: any) => d.availableStock > 0 ) )).subscribe((val)=>{
+        console.log('test>>', val)
+        console.log(234)
 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-
-      this.service.fetchposts().subscribe((val)=>{
                  this.allbook = val;
-                //  console.log(val);
+                 console.log(val);
                  this.filteroption1 = val;
 
       })
@@ -103,38 +115,16 @@ allperson:any;
     });
   }
   this.createForm()
-    // this.service.fetchrentedBook().subscribe((data:any) => {
-    //   console.log(data);
-    //   this.posts = data;
-   
-    //   // console.log( typeof this.posts[0].publishDate)
-    //   // Assign the data to the data source for the table to render
-    //   this.dataSource = new MatTableDataSource(this.posts);
 
-    //   this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-
-    //   this.service.fetchposts().subscribe((val)=>{
-    //              this.allbook = val;
-    //   })
-    //   this.service1.fetchposts().subscribe((val)=>{
-    //     this.allperson = val;
-    //   })
-    // });
   }
 
-   ngAfterViewInit() {
-    
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-   }
+  checkdata(data:any)
+  {  if(data.availableStock > 0)
+        { return true;
+        }
+        return false;
+  }
 
-   navigatetoassign(){
-    this.router.navigate(['home/booktrack/assignbook'])
-   }
-
-   navigateto(data:any){
-    this.router.navigate(['home/booktrack/assignbook/'+data])   }
   //////////////////
   createForm() {
   
@@ -156,6 +146,10 @@ allperson:any;
     })
   }
 
+  resetit()
+  {
+    this.router.navigate(['home/booktrack/assignbook'])
+  }
   get bookId() {
     return this.formGroup!.get('bookId') as FormControl
   }
@@ -186,6 +180,7 @@ allperson:any;
   }
  
 nostock:any = false;
+wrongval = false;
 ///////////////////////////////////////
   onSubmit(post: any) {
     this.post = {
@@ -198,13 +193,18 @@ nostock:any = false;
         
       
     };
-    console.log('hi')
-   console.log( this.post)
+    // console.log('1234566')
+  //  console.log( this.post+'hi')
+   if(!this.post.bookId || !this.post.personId)
+   {
+    this.wrongval = true;
+   }
    console.log('hi')
     
    this.service.RenteBook(this.post).subscribe((val)=>{
 
     console.log(val);  
+    console.log('hi')
    if(!val)
    {
     this.nostock = true;
@@ -216,10 +216,10 @@ nostock:any = false;
         
     // console.log(this.posts[0].publishDate)
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(this.posts);
+    // this.dataSource = new MatTableDataSource(this.posts);
 
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
    
    
   });
@@ -232,6 +232,9 @@ nostock:any = false;
 
 if (this.myForm) {
   this.myForm.resetForm();
+  this.filteroption1 = this.allbook;
+  this.filteroption = this.allperson
+  // this.myForm.markAllAsTouched;
 }
 
   }
@@ -252,12 +255,7 @@ updatevalue(row:any){
       console.log(data);
       this.posts = data;
    
-      // console.log( typeof this.posts[0].publishDate)
-      // Assign the data to the data source for the table to render
-      this.dataSource = new MatTableDataSource(this.posts);
-
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+   
     });
   })
   }
@@ -272,7 +270,11 @@ updatevalue(row:any){
 
 
 
-
+nostockreset()
+{
+  this.nostock = false;
+  this.wrongval= false
+}
 
 
 
@@ -281,15 +283,15 @@ this.router.navigate(['home/booktrack'])
   }
 
   /////////////////////////////////
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    console.log(this.dataSource)
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(this.dataSource)
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   console.log(this.dataSource)
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  //   console.log(this.dataSource)
+  //   if (this.dataSource.paginator) {
+  //     this.dataSource.paginator.firstPage();
+  //   }
+  // }
 
 ////////////////////////////////////
 
@@ -302,8 +304,21 @@ RangeValidator(): ValidatorFn {
     //  console.log(date2.getDate())
     //  console.log( control.value !== null);
     //  console.log(date2.getFullYear(),date.getFullYear() )
-      if ( date2.getDate() != date.getDate() ) {
+      if ( date2.getDate() !== date.getDate() ) {
         console.log(date );
+        console.log('hi')
+          return { 'startdate': true };
+
+      }
+      if ( date2.getMonth() !== date.getMonth() ) {
+        console.log(date );
+        console.log('hi')
+          return { 'startdate': true };
+
+      }
+      if ( date2.getFullYear() !== date.getFullYear() ) {
+        console.log(date );
+        console.log('hi')
           return { 'startdate': true };
 
       }
@@ -403,3 +418,4 @@ filterdata1(res:any){
 
 
 }
+

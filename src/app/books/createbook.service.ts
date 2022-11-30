@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class CreatebookService {
   fetchposts(){
    
     
-    return  this.http.get('http://localhost:8080/books/onlybooks');
+    return  this.http.get(environment.apiServer +'books/onlybooks');
     }
 
     updateposts(postData:any){

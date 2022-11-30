@@ -9,6 +9,11 @@
     <input matInput type="text" [(ngModel)]="filterValue"  
     (keyup)="findByName(filterValue)" placeholder="Search Username" #input1>
 </mat-form-field>
+<mat-form-field appearance="standard" color="warn">
+  <mat-label>Filter by Author Firstname</mat-label>
+
+  <input matInput type="text" (keyup)="onSearch($event)" />
+</mat-form-field>
 
 
   
@@ -16,10 +21,10 @@
     <table mat-table [dataSource]="dataSource" matSort>
   
       <!-- ID Column -->
-      <ng-container matColumnDef="id">
+      <!-- <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> AuthorID </th>
         <td   mat-cell *matCellDef="let row"> {{row.id}} </td>
-      </ng-container>
+      </ng-container> -->
     
       
 

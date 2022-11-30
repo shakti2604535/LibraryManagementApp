@@ -9,6 +9,8 @@ import { ShowauthorbookModule } from '../showauthorbook/showauthorbook.module';
 import { TryresolveGuard } from '../tryresolve.guard';
 import { SecondGuard } from '../second.guard';
 import { UnsavechangeGuard } from '../unsavechange.guard';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SendrequestInterceptor } from '../sendrequest.interceptor';
 
 
 
@@ -22,7 +24,7 @@ import { UnsavechangeGuard } from '../unsavechange.guard';
   ],
   exports:[HomeComponent],
   providers:[
-    DatePipe,TryresolveGuard,SecondGuard,UnsavechangeGuard
+    DatePipe,TryresolveGuard,SecondGuard,UnsavechangeGuard,{provide: HTTP_INTERCEPTORS,useClass:SendrequestInterceptor,multi:true }
   ]
 })
 export class HomeModule { }

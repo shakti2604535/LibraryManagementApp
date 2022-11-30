@@ -4,7 +4,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MaterialModule } from '../material.module';
 import { DashboardRoutingModule } from './dashboard/dashboard-routing.module';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SendrequestInterceptor } from '../sendrequest.interceptor';
 
 
 
@@ -17,6 +18,6 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   exports:[
     DashboardComponent
-  ]
+  ],providers:[{provide: HTTP_INTERCEPTORS,useClass:SendrequestInterceptor,multi:true }]
 })
 export class DashboardModule { }

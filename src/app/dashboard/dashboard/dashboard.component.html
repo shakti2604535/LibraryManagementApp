@@ -7,11 +7,11 @@
     <table mat-table [dataSource]="dataSource" matSort>
   
       <!-- ID Column -->
-      <ng-container matColumnDef="bookId">
+      <!-- <ng-container matColumnDef="bookId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
         <td mat-cell *matCellDef="let row"  (click)="naviagtetobook(row.bookId)"> {{row.bookId}} </td>
       </ng-container>
-    
+     -->
      
 
       <!----title-->
@@ -21,15 +21,15 @@
       </ng-container>
   
       <!-- Progress Column -->
-      <ng-container matColumnDef="AuthorName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> AuthorName </th>
+      <ng-container matColumnDef="authorName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Author Name </th>
         <td mat-cell *matCellDef="let row"> {{row.authorName}} </td>
       </ng-container>
   
       <!-- Name Column -->
      
       <ng-container matColumnDef="AvavilableStock">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> AvavilableStock </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Available Stock </th>
         <td mat-cell *matCellDef="let row" [ngClass]=
         "{ 'negative' : row.availableStock === 0,
             'positive': row.availableStock > 0
@@ -43,7 +43,7 @@
   
       <!-- Fruit Column -->
       <ng-container matColumnDef="RentedBooks">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> RentedBooks </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rented Books </th>
         <td mat-cell *matCellDef="let row"> {{row.rentedBook}} </td>
       </ng-container>
       <ng-container matColumnDef="Overdue">

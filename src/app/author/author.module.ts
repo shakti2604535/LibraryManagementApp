@@ -5,12 +5,14 @@ import { AuthorRoutingModule } from './author/author-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material.module';
+import { AuthordetailsComponent } from './authordetails/authordetails.component';
 
 
 
 @NgModule({
   declarations: [
-    AuthorComponent
+    AuthorComponent,
+    AuthordetailsComponent
   ],
   imports: [
     CommonModule,AuthorRoutingModule,HttpClientModule,ReactiveFormsModule,MaterialModule

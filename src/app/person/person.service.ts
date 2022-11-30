@@ -7,6 +7,11 @@ import { Injectable } from '@angular/core';
 export class PersonService {
 
   constructor(private http:HttpClient) { }
+
+  fetchpersonbyId(data:any)
+  {
+                return this.http.get('http://localhost:8080/get/person/'+data)
+  }
   fetchposts(){
    
     

@@ -1,5 +1,8 @@
+
 <div>
+ 
 <div class=" child inline-block-child">
+  <button class="add" (click)="navigatetoupdate()" >CREATE</button>
 <mat-form-field appearance="standard">
     <mat-label>Filter Table</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
@@ -9,11 +12,11 @@
     <table mat-table [dataSource]="dataSource" matSort>
   
       <!-- ID Column -->
-      <ng-container matColumnDef="personId">
+      <!-- <ng-container matColumnDef="personId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
         <td mat-cell *matCellDef="let row"> {{row.personId}} </td>
       </ng-container>
-    
+     -->
   
 
       <!----title-->
@@ -25,7 +28,7 @@
   
       <!-- Progress Column -->
       <ng-container matColumnDef="personName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> PersonName </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name </th>
         <td mat-cell *matCellDef="let row"> {{row.personName}} </td>
       </ng-container>
   
@@ -38,11 +41,11 @@
 
       <ng-container matColumnDef="update">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
-        <td mat-cell *matCellDef="let row"> <button (click)="updatevalue(row)">Update</button> </td>
+        <td mat-cell *matCellDef="let row"> <button (click)="naviagtetobook(row.personId,row)">Update</button> </td>
       </ng-container>
       <!-- Fruit Column -->
       <ng-container matColumnDef="RentedBooks">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> RentedBooks </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rented Books </th>
         <td mat-cell *matCellDef="let row"> {{row.personRentedBook}} </td>
       </ng-container>
       <ng-container matColumnDef="Overdue">
@@ -66,7 +69,7 @@
   </div>
   <!---------------------------------------------------------------------->
 
-  <div class="parent">
+  <!-- <div class="parent">
     <div class=" child inline-block-child1" ><mat-toolbar color="warn">
         <span class="fill-remaining-space">Add Person Details</span>
       </mat-toolbar>
@@ -104,14 +107,14 @@
             </mat-error>
           </mat-form-field> -->
           <!---------------------------------------------------------->
-          <mat-form-field class="form-element">
+          <!-- <mat-form-field class="form-element">
             <input matInput  [matDatepicker]="picker1" placeholder="mm/dd/yyyy" formControlName="dob">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
             <mat-error *ngIf="!formGroup!.controls['dob'].valid && formGroup!.controls['dob'].touched">
                 {{ getPublishedError() }}
               </mat-error>
-          </mat-form-field>
+          </mat-form-field> -->
           
     
     
@@ -124,12 +127,12 @@
       
          
       
-          <div class="form-element">
+          <!-- <div class="form-element">
             <button mat-raised-button color="warn" type="submit" class="button" [disabled]="!formGroup!.valid">Submit Form</button>
           </div>
       
         </form>
       </div>
-    </div>
-    
+    </div> -->
+     
 </div>

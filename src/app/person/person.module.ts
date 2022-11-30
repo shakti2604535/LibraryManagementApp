@@ -5,12 +5,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PersonRoutingModule } from './person/person-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '../material.module';
+import { UpdatepersonComponent } from './updateperson/updateperson.component';
 
 
 
 @NgModule({
   declarations: [
-    PersonComponent
+    PersonComponent,
+    UpdatepersonComponent
   ],
   imports: [
     CommonModule,ReactiveFormsModule,PersonRoutingModule,HttpClientModule,MaterialModule

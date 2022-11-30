@@ -44,38 +44,49 @@
   .button {
     width: 100%;
   }
-  .add{
-    float: right;
-    width: 180px;
-    background: none;
-    border: 1px solid green;
-    font-size: 23px;
-    // padding: 10px 20px;
-    font-family: "montserrat";
-    cursor: pointer;
-    // margin: 10px;
-    transition: 0.8s;
-    position: relative;
-    overflow: hidden;
-    margin: 20px;
-    height: 40px;
-    
-
-  }
-  .add:hover{
-    background-color: green;
-  }
   .inline-block-child1 {
     float: left;
     width: 35%;
    
     }
+    .add{
+        float: right;
+        width: 180px;
+        background: none;
+        border: 1px solid green;
+        font-size: 23px;
+        // padding: 10px 20px;
+        font-family: "montserrat";
+        cursor: pointer;
+        // margin: 10px;
+        transition: 0.8s;
+        position: relative;
+        overflow: hidden;
+        margin: 20px;
+        height: 40px;
+        
+    
+      }
+      .Reset{
+        width: 500px;
+        height: 40px;
+        border-radius: 2px;
+      
+            cursor: pointer;
+          
+      }
+      .inline-block-child1 {
+
+        width: 40%;
+        border: 1px solid hsl(0, 0%, 0%);
+         margin-left: 370px;
+    
+        }
+      .add:hover{
+        background-color: green;
+      }
     .inline-block-child {
       float: left;
      margin-right: 10px;
-      width: 100%;
-      }
-
-      .negative{
-        background-color: red;
+      width: 63%;
       }

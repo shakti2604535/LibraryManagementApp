@@ -4,6 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective, ValidatorF
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { PersonService } from '../person.service';
 
 @Component({
@@ -18,13 +19,13 @@ export class PersonComponent implements OnInit {
   post: any = '';
 
 
-  displayedColumns: string[] = ['personId', 'personDob', 'personName', 'personAddress','RentedBooks','Overdue','update'];
+  displayedColumns: string[] = [ 'personDob', 'personName', 'personAddress','RentedBooks','Overdue','update'];
   dataSource!: MatTableDataSource<any>;
   posts:any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private service:PersonService,private formBuilder: FormBuilder,public datepipe: DatePipe) {
+  constructor(private service:PersonService,private formBuilder: FormBuilder,public datepipe: DatePipe,private route : Router) {
   }
   ngOnInit(){
     this.service.fetchposts().subscribe((data:any) => {
@@ -38,8 +39,14 @@ export class PersonComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       
     });
+    // 
+    
     this.createForm();
   }
+
+  navigatetoupdate(){
+    this.route.navigate(['home/addperson/create'])
+      }
 //////////////////////////////////////////////////////////////
   createForm() {
   
@@ -82,7 +89,10 @@ export class PersonComponent implements OnInit {
   ///////////////////////
   submitorupdate:boolean = false;
   first:string = ''
+  naviagtetobook(id:any,data:any){
 
+    this.route.navigate(['home/addperson/update/'+id]);
+  }
 
   updatevalue(row:any){
     this.submitorupdate = true;

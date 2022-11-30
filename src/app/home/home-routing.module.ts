@@ -11,12 +11,12 @@ import { HomeComponent } from './home.component';
 
 const routes: Routes = [
   {path:'',component:HomeComponent ,canActivateChild:[AuthGuard],children:[
-    {path:'booktrack',component:BookrentedComponent},
-    {path:'booktrack/:id', resolve:{data:SecondGuard},component:BookrentedComponent},
+    // {path:'booktrack',component:BookrentedComponent},
+    // {path:'booktrack/:id', resolve:{data:SecondGuard},component:BookrentedComponent},
     {path:'create',canDeactivate:[UnsavechangeGuard],component:CreateauthorbookComponent},
     {path:'update/:bid/:aid',resolve:{data:TryresolveGuard},canDeactivate:[UnsavechangeGuard],component:CreateauthorbookComponent},
     { path: 'dashboard', loadChildren: () => import('src/app/dashboard/dashboard.module').then(m => m.DashboardModule) },
-    { path: 'createbook', loadChildren: () => import('src/app/books/books.module').then(m => m.BooksModule)},
+    { path: 'booktrack', loadChildren: () => import('src/app/books/books.module').then(m => m.BooksModule)},
     // { path: 'createbook/:id', loadChildren: () => import('src/app/books/books.module').then(m => m.BooksModule)},
     { path: 'addperson', loadChildren: () => import('src/app/person/person.module').then(m => m.PersonModule)},
     { path: 'addauthor', loadChildren: () => import('src/app/author/author.module').then(m => m.AuthorModule)},

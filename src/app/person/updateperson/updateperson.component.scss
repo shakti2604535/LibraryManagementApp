@@ -1,0 +1,53 @@
+
+
+  .container {
+    padding: 10px;
+  }
+  .inline-block-child1 {
+
+    width: 40%;
+    border: 1px solid hsl(0, 0%, 0%);
+     margin-left: 370px;
+
+    }
+    .Reset{
+        width: 500px;
+        height: 40px;
+        border-radius: 2px;
+      
+            cursor: pointer;
+          
+      }
+  .parent{
+    width: 100%;
+  
+    // background: url("../../../../src/image/pexels-photo.jpg") no-repeat  center ;
+  }
+  .form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 20%;
+  }
+  
+  
+  
+
+  
+  .form-element {
+    padding: 5px 0px 25px 2px;
+    width: 100%;
+  }
+  
+  .button {
+    width: 100%;
+  }
+
+
+      .negative{
+        background-color: red;
+      }

@@ -67,11 +67,15 @@
         
     
       }
+      .changecursor:hover{
+        cursor: pointer;
+      }
+    
       .add:hover{
         background-color: green;
       }
     .inline-block-child {
       float: left;
      margin-right: 10px;
-      width: 63%;
+      width: 100%;
       }

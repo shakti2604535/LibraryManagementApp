@@ -7,9 +7,10 @@ import { Observable, Subject } from 'rxjs';
 })
 export class LoginService  {
 
+  public token:any;
 private  logginstatus:boolean = true;
 isAuthenticated() {
-  this.logginstatus = sessionStorage.getItem('logginstatus') === 'Y' ? true : false ;
+  this.logginstatus = sessionStorage.getItem('token') !== null ? true : false ;
   // this.logginstatus = localStorage.getItem('logginstatus') === 'Y' ? true : false ;
   // console.log(sessionStorage.getItem('logginstatus'))
   const promise = new Promise(
@@ -22,15 +23,17 @@ isAuthenticated() {
   return promise;
 }
  
-login() {
+login(data:any) {
   this.logginstatus = true;
-  sessionStorage.setItem('logginstatus', 'Y');
+  this.token = data;
+  sessionStorage.setItem('token', this.token);
   // localStorage.setItem('logginstatus', 'Y');
 }
 
 logout() {
   // this.logginstatus = false;
-  sessionStorage.setItem('logginstatus', 'N');
+  sessionStorage.clear()
+  // sessionStorage.setItem('logginstatus', 'N');
   // localStorage.setItem('logginstatus', 'N');
 }
 // islogin(data:boolean)
@@ -53,7 +56,10 @@ logout() {
   }
 
   createlibrarian(data:any){
-    return  this.http.post('http://localhost:8080/get/newlibr',data);
+    return  this.http.post('http://localhost:8080/newlibr',data);
+  }
+  fetchpost(user:any){
+    return this.http.post('http://localhost:8080/authenticate',user)
   }
   
 }

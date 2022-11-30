@@ -16,6 +16,11 @@ export class AuthorService {
       console.log(postData)
      return  this.http.post('http://localhost:8080/author/addauthor',postData)
     }
+    updateauthor(postData:any){
+      
+      return this.http.put('http://localhost:8080/author/authorbyid/'+postData.authorid,postData)
+
+    }
     updateposts(postData:any){
       
       return this.http.put('http://localhost:8080/author/authors/'+postData.authorid,postData)
@@ -24,4 +29,5 @@ export class AuthorService {
     fetchbyId(id:any){
       return this.http.get('http://localhost:8080/author/author/'+id);
     }
+    
 }

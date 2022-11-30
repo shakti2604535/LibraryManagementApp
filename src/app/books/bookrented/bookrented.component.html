@@ -4,39 +4,40 @@
         <mat-label>Filter Table</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
       </mat-form-field>
+      <button class="add" (click)="navigatetoassign()" >ASSIGN</button>
       <button class="add" (click)="navigatetoupdate()" >RESET</button>
       <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort>
       
           <!-- ID Column -->
-          <ng-container matColumnDef="trackId">
+          <!-- <ng-container matColumnDef="trackId">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> TrackID </th>
             <td mat-cell *matCellDef="let row"> {{row.booktrack.trackId}} </td>
           </ng-container>
-        
+         -->
      
     
           <!----title-->
           <ng-container matColumnDef="bookId">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> BookTitle </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
            
-            <td mat-cell *matCellDef="let row"> {{row.title}} </td>
+            <td mat-cell *matCellDef="let row" [ngClass]="{'changecursor':row}" (click)="navigateto(row.booktrack.bookId)"> {{row.title}} </td>
           </ng-container>
       
           <!-- Progress Column -->
           <ng-container matColumnDef="startDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> StartDate </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
             <td mat-cell *matCellDef="let row"> {{row.booktrack.startDate| date : "mediumDate"}} </td>
           </ng-container>
       
           <!-- Name Column -->
           <ng-container matColumnDef="expectedReturnDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> ExpectedReturnDate </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Expected Return Date </th>
             <td mat-cell *matCellDef="let row"> {{row.booktrack.expectedReturnDate| date : "mediumDate"}} </td>
           </ng-container>
         
           <ng-container matColumnDef="actualReturnDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> ActualReturnDate </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Actual Return Date </th>
             <td mat-cell *matCellDef="let row"> {{row.booktrack.actualReturnDate| date : "mediumDate"}} </td>
           </ng-container>
        
@@ -47,7 +48,7 @@
       
           <!-- Fruit Column -->
           <ng-container matColumnDef="personId">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Person Name </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
             <td mat-cell *matCellDef="let row"> {{row.personName}} </td>
           </ng-container>
           
@@ -67,13 +68,13 @@
 
 
       <!-------------------------------------------->
-      <div class=" child inline-block-child1" ><mat-toolbar color="primary">
+      <!-- <div class=" child inline-block-child1" ><mat-toolbar color="primary">
         <span class="fill-remaining-space">Issue Book To Person</span>
       </mat-toolbar>
  
       <div class="container"   > 
         <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup!.value)" class="form">
-    <!----------------->
+    <---------------->
           <!-- <mat-form-field class="form-element">
             <input  type="number" matInput  placeholder="bookId" formControlName="bookId">
             <mat-error *ngIf="!formGroup!.controls['bookId'].valid && formGroup!.controls['bookId'].touched">
@@ -89,7 +90,7 @@
                 <mat-error *ngIf="bookId.hasError('required')">Please choose a book</mat-error>
               </mat-form-field>  -->
           <!----------------------------->
-          <mat-form-field class="form-element">
+          <!-- <mat-form-field class="form-element">
             <mat-label>select Book</mat-label>
             <input matInput type="text" [matAutocomplete]="auto1"  formControlName="bookId"/>
                 <mat-autocomplete #auto1 ="matAutocomplete" [displayWith]="displayFn1">
@@ -100,7 +101,7 @@
         
             <mat-error *ngIf="bookId.hasError('required')">Please choose a book</mat-error>
           </mat-form-field> 
-           
+            -->
 
 
             <!----------------->
@@ -125,7 +126,7 @@
             <mat-error *ngIf="personId.hasError('required')">Please choose a person</mat-error>
           </mat-form-field>  -->
 <!---------------------->
-          <mat-form-field class="form-element">
+          <!-- <mat-form-field class="form-element">
             <mat-label>select Person</mat-label>
             <input matInput type="text" [matAutocomplete]="auto"  formControlName="personId"/>
                 <mat-autocomplete #auto ="matAutocomplete" [displayWith]="displayFn">
@@ -135,7 +136,7 @@
             </mat-autocomplete>
         
             <mat-error *ngIf="personId.hasError('required')">Please choose a person</mat-error>
-          </mat-form-field> 
+          </mat-form-field>  -->
 
 
           <!------------------------------->
@@ -147,14 +148,14 @@
             </mat-error>
           </mat-form-field> -->
 
-          <mat-form-field class="form-element">
-            <input matInput  [matDatepicker]="picker1" placeholder="mm/dd/yyyy" formControlName="startDate">
+          <!-- <mat-form-field class="form-element">
+            <input matInput  [matDatepicker]="picker1" placeholder="mm/dd/yyyy"  min="{{currentdate | date:'yyyy-MM-dd'}}" max="{{currentdate | date:'yyyy-MM-dd'}}"  formControlName="startDate">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
             <mat-error *ngIf="!formGroup!.controls['startDate'].valid && formGroup!.controls['startDate'].touched">
                 {{ getPublishedError()}}
               </mat-error>
-          </mat-form-field> 
+          </mat-form-field>  -->
          
           <!-- <mat-form-field class="form-element">
             <input type="date" matInput placeholder="expectedReturnDate" formControlName="expectedReturnDate">
@@ -162,15 +163,15 @@
               {{ getPagecountError()}}
             </mat-error>
           </mat-form-field>
-     -->
-           <mat-form-field class="form-element">
-            <input matInput  [matDatepicker]="picker2" placeholder="mm/dd/yyyy" formControlName="expectedReturnDate">
+      -->
+           <!-- <mat-form-field class="form-element">
+            <input matInput  [matDatepicker]="picker2" placeholder="mm/dd/yyyy"  min="{{currentdate | date:'yyyy-MM-dd'}}" formControlName="expectedReturnDate">
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
             <mat-error *ngIf="!formGroup!.controls['expectedReturnDate'].valid && formGroup!.controls['expectedReturnDate'].touched">
                 {{ getPagecountError()}}
               </mat-error>
-          </mat-form-field>
+          </mat-form-field>  -->
         
          <!-- <mat-form-field  class="form-element">
             <input type="date" matInput placeholder="actualReturnDate" formControlName="actualReturnDate">
@@ -180,12 +181,12 @@
           </mat-form-field> -->
       
          
-          <div class="form-element">
+          <!-- <div class="form-element">
             <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!formGroup!.valid">Submit Form</button>
           </div>
       
         </form>
    <p *ngIf="nostock">No Stock</p>
-      </div>
+      </div> --> 
     </div>
     

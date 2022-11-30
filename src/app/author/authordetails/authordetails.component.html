@@ -1,0 +1,36 @@
+
+<p *ngIf="novalue">NO SUCH VALUE EXISTS</p>
+<div *ngIf="!novalue">
+    <div class=" child inline-block-child1" ><mat-toolbar color="accent">
+        <span class="fill-remaining-space">{{action}}</span>
+      </mat-toolbar>
+      
+      <div class="container"   > 
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup!.value)" class="form">
+      
+          <mat-form-field class="form-element">
+            <input  type="text" matInput  placeholder="Firstname" formControlName="firstName">
+            <mat-error *ngIf="!formGroup!.controls['firstName'].valid && formGroup!.controls['firstName'].touched">
+                {{    getErrorTitle() }}               
+            </mat-error>
+          </mat-form-field>
+     
+          <mat-form-field class="form-element">
+            <input type="text" matInput placeholder="Lastname" formControlName="lastname">
+            <mat-error *ngIf="!formGroup!.controls['lastname'].valid && formGroup!.controls['lastname'].touched">
+             
+              {{  getDiscriptionError()}}
+            </mat-error>
+          </mat-form-field>
+      
+        
+
+          <div class="form-element">
+            <button mat-raised-button color="accent" type="submit" class="button" [disabled]="!formGroup!.valid">Submit Form</button>
+          </div>
+      
+        </form>
+        <button (click)="resetit()" class="Reset">Reset</button>
+      </div>
+    </div>
+  </div>

@@ -11,8 +11,9 @@ import { DashboardService } from '../dashboard.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-
-  displayedColumns: string[] = ['bookId', 'bookName', 'AuthorName', 'AvavilableStock','RentedBooks','Overdue'];
+  // minDate: Moment;
+  // maxDate: Moment;
+  displayedColumns: string[] = [ 'bookName', 'authorName', 'AvavilableStock','RentedBooks','Overdue'];
   dataSource!: MatTableDataSource<any>;
   posts:any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;

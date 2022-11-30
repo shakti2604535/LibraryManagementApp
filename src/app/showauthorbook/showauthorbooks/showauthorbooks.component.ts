@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Route, Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged, from, fromEvent, Subject } from 'rxjs';
 import { ShowauthorbooksService } from '../showauthorbooks.service';
 
 @Component({
@@ -13,7 +14,7 @@ import { ShowauthorbooksService } from '../showauthorbooks.service';
 })
 export class ShowauthorbooksComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'firstname', 'title', 'BookId','description','AvailableStock','PublishedDate','pageCount'];
+  displayedColumns: string[] = [ 'firstname', 'title', 'BookId','description','AvailableStock','PublishedDate','pageCount'];
   dataSource!: MatTableDataSource<any>;
   posts:any;
   filterValue:any = "";
@@ -35,6 +36,10 @@ export class ShowauthorbooksComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.dataSource.filterPredicate = this.filterBySubject();
+    })
+    this.subjectKeyUp.pipe(debounceTime(1000),distinctUntilChanged()).subscribe((val:any)=>{
+      console.log(val)
+      this.findByName(val);
     })
    
   }
@@ -62,9 +67,24 @@ export class ShowauthorbooksComponent implements OnInit {
     return filterFunction;
 }
 //////////////////////////////////////
+private subjectKeyUp = new Subject<any>();
+onSearch($event: any) {
+  const value = $event.target.value;
+  this.subjectKeyUp.next(value);
+
+ 
+
+}
+
+
+
+
+
 findByName(username: any) {
-   
+
+  
   if(username.length>0){
+    
   this.service.fetchbyauthorfirstname(username).subscribe((val:any)=>{
     console.log(val);
     if(val != null){
