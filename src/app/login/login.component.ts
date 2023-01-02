@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Route, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs/internal/Subject';
 import { LoginService } from './login.service';
 
@@ -17,7 +18,7 @@ details:any = [];
 validateuser:string='';
 validatepassword:string='';
 
-  constructor(private loginservice:LoginService, private route:Router) { }
+  constructor(private loginservice:LoginService, private route:Router, private toastr: ToastrService) { }
   form: FormGroup = new FormGroup({
     username: new FormControl('',[Validators.required,Validators.minLength(6)]),
     password: new FormControl('',[Validators.required,Validators.minLength(6)]),
@@ -71,10 +72,12 @@ validatepassword:string='';
   //  console.log(data)
   //  console.log(this.validatepassword,this.validateuser,this.loginstatus)
    this.loginservice.login(data.token);
+   this.toastr.success('login success','Message');
      this.route.navigate(['home/dashboard'])
     //  this.loginservice.islogin(true);
   }
   else{
+    this.toastr.error('Login fail', 'Wrong Credential');
     console.log('hi')
   this.loginstatus = true;
   }
@@ -85,7 +88,9 @@ else  {
   this.loginstatus = true;
      }
 }
-  
+navigatelogin(){
+  this.allowsign =false;
+}
 
   signin(){
     this.allowsign = true;
@@ -114,14 +119,18 @@ else  {
       // console.log(this.form1.value);
       if(this.form1.valid)
       {  this.postadata = this.form1.value;
-        console.log(this.form1.value);
+        // console.log(this.form1.value);
       // this.allowsign =false;
       this.loginservice.createlibrarian(this.postadata).subscribe((val)=>{
-        console.log(val);
+        // console.log(val+"<<<<<<");
             this.iscreated = val;
      if(val === true)
-     {
+     {   this.toastr.success('Signup success','Message');
       this.allowsign =false;
+     }
+     else{
+      this.toastr.success('sign up fail', 'Alert');
+
      }
       })
       }

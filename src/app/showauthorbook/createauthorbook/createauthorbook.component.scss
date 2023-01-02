@@ -20,3 +20,7 @@
     width: 500px;
     height: 50px;
   }
+  .mat-header-row::ng-deep {
+    background-color: gray;
+  }
+  

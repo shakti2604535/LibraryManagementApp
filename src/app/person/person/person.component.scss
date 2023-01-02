@@ -40,6 +40,9 @@
     padding: 5px 0px 25px 2px;
     width: 100%;
   }
+  .mat-header-row::ng-deep {
+    background-color: gray;
+  }
   
   .button {
     width: 100%;

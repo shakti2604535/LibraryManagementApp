@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Resolve, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRouteSnapshot, CanActivate, Resolve, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { catchError, EMPTY, Observable } from 'rxjs';
 import { CreatebookService } from './books/createbook.service';
 
 @Injectable({
@@ -8,13 +8,19 @@ import { CreatebookService } from './books/createbook.service';
 })
 export class SecondGuard implements Resolve<any>{
  
- constructor(private service:CreatebookService)
+ constructor(private service:CreatebookService,private navig:Router)
  {
 
  }
  
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-     return this.service.RentedBookByID(route.paramMap.get('id'))
+     return this.service.RentedBookByID(route.paramMap.get('id')).pipe(
+      catchError(()=>{
+     this.navig.navigate(['home/booktrack'])
+        return EMPTY
+      })
+    )
+       
   }
 
   

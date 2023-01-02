@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthorService } from '../author.service';
 
 @Component({
@@ -15,9 +16,11 @@ export class AuthordetailsComponent implements OnInit {
  authorid:any
   post: any = '';
   action:string='Create Author'
+  buttonval:string = 'Submit'
   val1:any
   submitorupdate: boolean = false;
-  constructor(private service:AuthorService,private formBuilder: FormBuilder,private route:ActivatedRoute,private navig:Router) { }
+  onresetchange:boolean = true;
+  constructor(private service:AuthorService,private toastr:ToastrService,private formBuilder: FormBuilder,private route:ActivatedRoute,private navig:Router) { }
 
   ngOnInit(): void {
     this.novalue= false;
@@ -26,8 +29,10 @@ export class AuthordetailsComponent implements OnInit {
      if(this.authorid)
      {     console.log(this.val1)
       this.action = 'Update Author Details'
+      this.buttonval = 'update';
       if(this.val1.authorId)
       { 
+        this.onresetchange = false;
         console.log(this.val1.status)
       this.createForm(); 
       //  console.log(this.service.details)
@@ -40,6 +45,7 @@ export class AuthordetailsComponent implements OnInit {
       }
      }
      else{
+      this.onresetchange = true;
     this.createForm()
      }
    
@@ -69,7 +75,12 @@ export class AuthordetailsComponent implements OnInit {
   }
   resetit(){
     // this.myForm.resetForm();
-    this.navig.navigate(['home/addperson/create'])
+  if(this.onresetchange)
+  {
+    this.myForm.resetForm();
+  }else{
+    this.updatevalue(this.val1)
+  }
    
    }
 
@@ -97,24 +108,40 @@ export class AuthordetailsComponent implements OnInit {
    {
    this.service.Createbook(this.post).subscribe((val)=>{
     console.log(val);
+    if(val)
+    {
+      this.navig.navigate(['/home/addauthor'])
+      this.toastr.success('Success', 'Message');
+    }
+    else{
+      this.toastr.error('failed', 'Alert');
+    }
     // this.createForm();
    
     
  })
-if (this.myForm) {
-  this.myForm.resetForm();
-}
+// if (this.myForm) {
+//   this.myForm.resetForm();
+// }
 
 }
 else{
   console.log('hi')
   this.service.updateauthor(this.post).subscribe((val)=>{
 
+    if(val)
+    {
+      this.navig.navigate(['/home/addauthor'])
+      this.toastr.success('Success', 'Message');
+    }
+    else{
+      this.toastr.error('failed', 'Alert');
+    }
  }) 
  
- if (this.myForm) {
-   this.myForm.resetForm();
- }
+//  if (this.myForm) {
+//    this.myForm.resetForm();
+//  }
 this.submitorupdate = false;
  }
 

@@ -1,18 +1,18 @@
 <button class="add" (click)="navigatetoupdate()" >CREATE</button>
 
   <mat-form-field appearance="standard">
-    <mat-label>Filter Table By Title</mat-label>
+    <mat-label>Filter Table By Description</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
   </mat-form-field>
-  <mat-form-field appearance="standard" color="warn">
+  <!-- <mat-form-field appearance="standard" color="warn">
     <mat-label>Filter by Author Firstname</mat-label>
-    <input matInput type="text" [(ngModel)]="filterValue"  
+    <input matInput type="text" 
     (keyup)="findByName(filterValue)" placeholder="Search Username" #input1>
-</mat-form-field>
+</mat-form-field> -->
 <mat-form-field appearance="standard" color="warn">
   <mat-label>Filter by Author Firstname</mat-label>
 
-  <input matInput type="text" (keyup)="onSearch($event)" />
+  <input matInput type="text" (keyup)="onSearch($event)" [(ngModel)]="filterValue"   />
 </mat-form-field>
 
 
@@ -37,15 +37,15 @@
   
       <!-- Progress Column -->
       <ng-container matColumnDef="firstname">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> AuthorName </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Author Name </th>
         <td mat-cell *matCellDef="let row"> {{row.firstname + " "+row.lastname}} </td>
       </ng-container>
      
       <!-- Name Column -->
-      <ng-container matColumnDef="BookId">
+      <!-- <ng-container matColumnDef="BookId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> BookId </th>
         <td mat-cell  *matCellDef="let row">{{row.bookId}} </td>
-      </ng-container>
+      </ng-container> -->
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Description </th>
         <td mat-cell *matCellDef="let row"> {{row.description}} </td>
@@ -57,15 +57,15 @@
         <td mat-cell *matCellDef="let row"  [ngClass]="{'changecursor':row}" (click)="Navidatetoupdate(row.bookId,row.id)"> {{row.title}} </td>
       </ng-container>
        <ng-container matColumnDef="AvailableStock">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> AvailableStock </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Available Stock </th>
         <td mat-cell *matCellDef="let row"> {{row.availableStock}} </td>
       </ng-container> 
       <ng-container matColumnDef="PublishedDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> PublishedDate </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Published Date </th>
         <td mat-cell *matCellDef="let row"> {{row.publishDate| date : "mediumDate"}} </td>
       </ng-container> 
       <ng-container matColumnDef="pageCount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> PageCount </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Page Count </th>
         <td mat-cell *matCellDef="let row"> {{row.pageCount}} </td>
       </ng-container> 
   
@@ -78,5 +78,14 @@
       </tr>
     </table>
   
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    <div *ngIf="dataSource && forpagination">
+      <mat-paginator 
+      [length]="posts.te" 
+      [pageSize]="posts.ps" 
+      [pageSizeOptions]="[5,10,25,100]"
+      (page)="pageEvent = $event; onPaginateChange($event)"
+      showFirstLastButtons>
+  </mat-paginator>  
+</div >
+    <mat-paginator *ngIf="!forpagination"   [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
   </div>

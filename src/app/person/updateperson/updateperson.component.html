@@ -34,16 +34,16 @@
       
           <!-- <mat-form-field class="form-element">
             <input type="date" matInput placeholder="personDob" formControlName="dob">
-            <!-- <mat-hint>Choose a password of at least eight characters, one uppercase letter and one number</mat-hint> -->
+             <mat-hint>Choose a password of at least eight characters, one uppercase letter and one number</mat-hint> -->
             <!-- <mat-error *ngIf="!formGroup!.controls['dob'].valid && formGroup!.controls['dob'].touched">
               {{ getPublishedError() }}
             </mat-error>
           </mat-form-field> -->
           <!---------------------------------------------------------->
           <mat-form-field class="form-element">
-            <input matInput  [matDatepicker]="picker1" placeholder="mm/dd/yyyy" formControlName="dob">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1></mat-datepicker>
+            <input matInput  [matDatepicker]="touchUi" placeholder="D.O.B(mm/dd/yyyy)" formControlName="dob">
+            <mat-datepicker-toggle matSuffix [for]="touchUi"></mat-datepicker-toggle>
+            <mat-datepicker touchUi="true" defaultOpen="true" #touchUi></mat-datepicker>
             <mat-error *ngIf="!formGroup!.controls['dob'].valid && formGroup!.controls['dob'].touched">
                 {{ getPublishedError() }}
               </mat-error>
@@ -61,7 +61,7 @@
          
       
           <div class="form-element">
-            <button mat-raised-button color="warn" type="submit" class="button" [disabled]="!formGroup!.valid">Submit Form</button>
+            <button mat-raised-button color="warn" type="submit" class="button" [disabled]="!formGroup!.valid">{{buttonval}}</button>
           </div>
       
         </form>

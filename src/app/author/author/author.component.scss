@@ -3,8 +3,13 @@
     /* This fills the remaining space, by using flexbox. 
        Every toolbar row uses a flexbox row layout. */
     flex: 1 1 auto;
-    
-  }
+}
+.mat-header-row::ng-deep {
+  background-color: gray;
+}
+
+  
+ 
   .add{
     float: right;
     width: 180px;
@@ -100,4 +105,7 @@
       float: left;
      margin-right: 10px;
       width: 100%;
+    // background-color:aqua;
+    
+      // background: url("../../../image/pexels-photo.jpg") no-repeat center center fixed ;
       }

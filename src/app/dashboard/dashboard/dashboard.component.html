@@ -1,5 +1,5 @@
 <mat-form-field appearance="standard">
-    <mat-label>Filter Table</mat-label>
+    <mat-label>Filter By Title</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
   </mat-form-field>
   
@@ -15,20 +15,25 @@
      
 
       <!----title-->
-      <ng-container matColumnDef="bookName">
+      <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
-        <td mat-cell *matCellDef="let row"  [ngClass]="{'changecursor':row}" (click)="navigatetotrack(row.bookId)"> {{row.bookName}} </td>
+        <td mat-cell *matCellDef="let row"  [ngClass]="{'changecursor':row}" (click)="navigatetotrack(row.bookId)"> {{row.title}} </td>
       </ng-container>
-  
+      <!-- private Long book_id;
+      private String title;
+      private String authorname;
+      private Integer available_stock;
+      private Integer rented;
+      private Integer overdue; -->
       <!-- Progress Column -->
-      <ng-container matColumnDef="authorName">
+      <ng-container matColumnDef="authorname">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Author Name </th>
-        <td mat-cell *matCellDef="let row"> {{row.authorName}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.authorname}} </td>
       </ng-container>
   
       <!-- Name Column -->
      
-      <ng-container matColumnDef="AvavilableStock">
+      <ng-container matColumnDef="availableStock">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Available Stock </th>
         <td mat-cell *matCellDef="let row" [ngClass]=
         "{ 'negative' : row.availableStock === 0,
@@ -42,13 +47,13 @@
      }" -->
   
       <!-- Fruit Column -->
-      <ng-container matColumnDef="RentedBooks">
+      <ng-container matColumnDef="rented">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Rented Books </th>
-        <td mat-cell *matCellDef="let row"> {{row.rentedBook}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.rented}} </td>
       </ng-container>
-      <ng-container matColumnDef="Overdue">
+      <ng-container matColumnDef="overdue">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Overdue </th>
-        <td mat-cell *matCellDef="let row"> {{row.overdueBook}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.overdue}} </td>
       </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

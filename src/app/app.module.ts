@@ -16,6 +16,7 @@ import { AuthGuard } from 'src/auth.guard';
 import { TryresolveGuard } from './tryresolve.guard';
 import { SecondGuard } from './second.guard';
 import { SendrequestInterceptor } from './sendrequest.interceptor';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SendrequestInterceptor } from './sendrequest.interceptor';
     HttpClientModule,
     HomeModule,
     RouterModule,
+    ToastrModule.forRoot(),
 
     MaterialModule
    

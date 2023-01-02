@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { filter, map, toArray } from 'rxjs';
 import { PersonService } from 'src/app/person/person.service';
 import { CreatebookService } from '../createbook.service';
@@ -18,7 +19,7 @@ export class RentbookComponent implements OnInit {
 
   id:any;
   currentdate :any = new Date();
-  constructor(private formBuilder: FormBuilder, private router:Router,private service:CreatebookService,private service1:PersonService,private route :ActivatedRoute,private navig:Router) { }
+  constructor(private formBuilder: FormBuilder,private toastr:ToastrService, private router:Router,private service:CreatebookService,private service1:PersonService,private route :ActivatedRoute,private navig:Router) { }
 
   @ViewChild(FormGroupDirective) myForm:any;
   formGroup!: FormGroup;
@@ -26,7 +27,8 @@ export class RentbookComponent implements OnInit {
   post: any = '';
 allbook:any ;
 allperson:any;
-
+onresetchangedata:any;
+onrestchange:boolean = true;
   ngOnInit() {
   this.id = this.route.snapshot.params['id'];
   
@@ -39,11 +41,13 @@ allperson:any;
     // this.service.RentedBookByID(+this.id).subscribe((val)=>{
     if(this.route.snapshot.data['data'])
     {
+      this.onrestchange = false;
+      this.onresetchangedata = this.id;
     this.createForm();
    
   
-       this.service.fetchposts().subscribe((val)=>{
-      
+       this.service.fetchposts().pipe(map((data:any) => data.filter((d: any) => d.availableStock > 0 ) )).subscribe((val)=>{
+         console.log(val)
                  this.allbook = val;
                  this.filteroption1 = val;
                  this.posts = this.route.snapshot.data['data'];
@@ -79,7 +83,7 @@ allperson:any;
       })
     }
     else{
-   this.navig.navigate(['home/booktrack'])
+   this.navig.navigate(['home/dashboard'])
     }
     // })
    
@@ -93,6 +97,7 @@ allperson:any;
     // });    
   }
   else{
+    this.onrestchange = true;
     this.service.fetchrentedBook().subscribe((data:any) => {
     
       // console.log(234)
@@ -127,12 +132,16 @@ allperson:any;
 
   //////////////////
   createForm() {
-  
+    const date2 = new Date()
+    const date = new Date();
+    const date1 = new Date(date.setDate(date.getDate()+2))
+    console.log(date1)
+    console.log('<<<<<<<<<<<')
     this.formGroup = this.formBuilder.group({
       'bookId': [null, [Validators.required]],
       'personId': [null, [Validators.required]],
-      'startDate': [null, [Validators.required,this.RangeValidator()]],
-      'expectedReturnDate': [null, [Validators.required,this.ExpectedRangeValidator()]],
+      'startDate': [date2, [Validators.required,this.RangeValidator()]],
+      'expectedReturnDate': [date1, [Validators.required,this.ExpectedRangeValidator()]],
       'actualReturnDate': [null,],
       'validate': ''
     });
@@ -147,9 +156,26 @@ allperson:any;
   }
 
   resetit()
-  {
-    this.router.navigate(['home/booktrack/assignbook'])
+  {  
+    if(this.onrestchange){
+    this.myForm.resetForm()
+    }
+    else{
+    
+      this.formGroup = this.formBuilder.group({
+        'bookId': [this.filteroption1[0], [Validators.required]],
+        'personId': [null, [Validators.required]],
+        'startDate': [null, [Validators.required,this.RangeValidator()]],
+        'expectedReturnDate': [null, [Validators.required,this.ExpectedRangeValidator()]],
+        'actualReturnDate': [null,],
+        'validate': ''
+      });
+   
+ 
+    }
   }
+
+
   get bookId() {
     return this.formGroup!.get('bookId') as FormControl
   }
@@ -200,13 +226,19 @@ wrongval = false;
     this.wrongval = true;
    }
    console.log('hi')
-    
+
    this.service.RenteBook(this.post).subscribe((val)=>{
 
     console.log(val);  
     console.log('hi')
+    if(val)
+    {
+      this.toastr.success('Success', 'Message');
+
+    }
    if(!val)
    {
+    this.toastr.success('Failed', 'Alert');
     this.nostock = true;
    }
   
@@ -242,17 +274,30 @@ if (this.myForm) {
 ////////////////////////
 
 updatevalue(row:any){
+
+  this.post = {
+    "trackId":row.trackId,
+    "actualReturnDate": null,
+    "bookId": row.bookId.bookId,
+    "expectedReturnDate": row.expectedReturnDate,
+    "personId": row.personId.id,
+    "startDate": row.startDate,
+    
+  
+};
   const today  = new Date(); 
   console.log(row.trackId)
   if(row.actualReturnDate === null)
   {
   console.log(  row.actualReturnDate)
   row.actualReturnDate = today;
-  console.log(  row.actualReturnDate)
-  this.service.returnissuebook(row).subscribe((val)=>{
+  console.log(  this.post)
+  this.service.returnissuebook(this.post).subscribe((val)=>{
 
     this.service.fetchrentedBook().subscribe((data:any) => {
-      console.log(data);
+      console.log(data+'<<<<<');
+      this.toastr.success('Success', 'Message');
+
       this.posts = data;
    
    

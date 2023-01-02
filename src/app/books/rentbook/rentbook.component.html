@@ -79,7 +79,7 @@
       </mat-form-field> -->
 
       <mat-form-field class="form-element">
-        <input matInput  [matDatepicker]="picker1" placeholder="mm/dd/yyyy"  min="{{currentdate | date:'yyyy-MM-dd'}}" max="{{currentdate | date:'yyyy-MM-dd'}}"  formControlName="startDate">
+        <input matInput  [matDatepicker]="picker1" placeholder="StartDate(mm/dd/yyyy)"  min="{{currentdate | date:'yyyy-MM-dd'}}" max="{{currentdate | date:'yyyy-MM-dd'}}"  formControlName="startDate">
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
         <mat-error *ngIf="!formGroup!.controls['startDate'].valid && formGroup!.controls['startDate'].touched">
@@ -95,7 +95,7 @@
       </mat-form-field>
  -->
        <mat-form-field class="form-element">
-        <input matInput  [matDatepicker]="picker2" placeholder="mm/dd/yyyy"  min="{{currentdate | date:'yyyy-MM-dd'}}" formControlName="expectedReturnDate">
+        <input matInput  [matDatepicker]="picker2" placeholder="Expected Return Date(mm/dd/yyyy)"  min="{{currentdate | date:'yyyy-MM-dd'}}" formControlName="expectedReturnDate">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
         <mat-error *ngIf="!formGroup!.controls['expectedReturnDate'].valid && formGroup!.controls['expectedReturnDate'].touched">

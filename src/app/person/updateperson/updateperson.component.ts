@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { PersonService } from '../person.service';
 
 @Component({
@@ -15,10 +16,12 @@ export class UpdatepersonComponent implements OnInit {
   post: any = '';
   submitorupdate:boolean = false;
   first:string = ''
-  constructor(private formBuilder: FormBuilder,public datepipe: DatePipe,private service:PersonService,private route:ActivatedRoute,private navig:Router) { }
+  constructor(private formBuilder: FormBuilder,private toastr:ToastrService,public datepipe: DatePipe,private service:PersonService,private route:ActivatedRoute,private navig:Router) { }
   personid:any;
   novalue:boolean = false;
   action:string='Create Person'
+  buttonval:string='Submit'
+  onresetchange:boolean = true;
 val1:any;
   ngOnInit(): void {
     this.novalue= false;
@@ -27,8 +30,10 @@ val1:any;
      if(this.personid)
      {     console.log(this.val1)
       this.action = 'Update Person Details'
+      this.buttonval = 'Update'
       if(this.val1.id !== 0)
       { 
+        this.onresetchange = false;
         console.log(this.val1.status)
       this.createForm(); 
       //  console.log(this.service.details)
@@ -42,6 +47,7 @@ val1:any;
      }
      else{
     this.createForm()
+    this.onresetchange = true;
      }
    
   }
@@ -65,7 +71,14 @@ val1:any;
 
   resetit(){
     // this.myForm.resetForm();
-    this.navig.navigate(['home/addperson/create'])
+    if(this.onresetchange)
+    {
+      this.myForm.resetForm();
+    }
+    else{
+      this.updatevalue(this.val1)
+    }
+  
    
    }
   createForm() {
@@ -102,17 +115,34 @@ val1:any;
    this.service.Createbook(this.post).subscribe((val)=>{
     console.log(val);
     // this.createForm();
+    if(val)
+    {
+      this.toastr.success('Success', 'Message');
+      this.navig.navigate(['/home/person'])
+    }
+    else{
+      this.toastr.error('failed', 'Alert');
+    }
  
     
  })
-if (this.myForm) {
-  this.myForm.resetForm();
-}
+// if (this.myForm) {
+//   this.myForm.resetForm();
+// }
    }
    else {
 
     this.service.updateperson(this.post).subscribe((val)=>{
       console.log(val);
+      if(val)
+      {
+        this.navig.navigate(['/home/person'])
+
+        this.toastr.success('Success', 'Message');
+      }
+      else{
+        this.toastr.error('failed', 'Alert');
+      }
       // this.createForm();
      
       
@@ -137,7 +167,11 @@ if (this.myForm) {
       //  console.log(date2.getDate())
       //  console.log( control.value !== null);
       //  console.log(date2.getFullYear(),date.getFullYear() )
-        if ( date.getFullYear() - date2.getFullYear() <12 ) {
+      var Time = date.getTime() - date2.getTime();
+      let t = Time/(1000 * 3600 * 24);
+    console.log(t)
+    console.log('<<<<')
+        if ( t <=3618 ) {
           console.log(date );
             return { 'startdate': true };
   

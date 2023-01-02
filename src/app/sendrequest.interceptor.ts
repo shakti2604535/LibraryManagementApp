@@ -5,13 +5,14 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { LoginService } from './login/login.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class SendrequestInterceptor implements HttpInterceptor {
-
-  constructor(private login:LoginService) {} 
+errors:any;
+  constructor(private login:LoginService,private toastr:ToastrService) {} 
   private setHeaders(request: HttpRequest<any>) {
     // const token = this.login.token;
     const token = sessionStorage.getItem('token')
@@ -30,6 +31,38 @@ export class SendrequestInterceptor implements HttpInterceptor {
   // console.log(  request.url)
   request = this.setHeaders(request);
         //  request.headers.set('Authorization', 'Bearer ' + this.login.token)
-    return next.handle(request);
+    return next.handle(request).pipe(catchError((errordata:any)=>{
+   if(errordata.status=== 0)
+   {
+       this.toastr.error("Server not responding")
+    this.login.logout()
+   }
+   else if(errordata.status === 404)
+   {
+    this.toastr.error("Resource Not found")
+   
+    
+   }
+   else if(errordata.status === 401)
+   {
+    this.toastr.error("Server not responding")
+    this.login.logout()
+
+   }
+   else if(errordata.status == 400){
+    this.errors=Object.values(errordata.error);
+    this.toastr.error("Bad Request",this.errors)
+   }
+   else{
+    this.errors=Object.values(errordata.error);
+   this.toastr.error("Something went wrong",this.errors,{
+    timeOut:10000,
+   });
+  }
+  //  this.login.logout()
+  // return of([]);
+   return throwError(errordata)
+  //  return [];
+  }));
   }
 }

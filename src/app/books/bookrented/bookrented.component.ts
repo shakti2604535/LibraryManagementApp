@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthorService } from 'src/app/author/author.service';
 import { PersonService } from 'src/app/person/person.service';
 import { CreatebookService } from '../createbook.service';
@@ -17,7 +18,7 @@ export class BookrentedComponent implements OnInit {
 
  
 
-  displayedColumns: string[] = [ 'bookId', 'startDate', 'expectedReturnDate','actualReturnDate','personId','update'];
+  displayedColumns: string[] = [ 'title', 'booktrack.startDate', 'expectedReturnDate','booktrack.actualReturnDate','personName','update'];
   dataSource!: MatTableDataSource<any>;
   posts:any;
   filteroption:any;
@@ -26,7 +27,7 @@ export class BookrentedComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   id:any;
   currentdate :any = new Date();
-  constructor(private formBuilder: FormBuilder, private router:Router,private service:CreatebookService,private service1:PersonService,private route :ActivatedRoute,private navig:Router) { }
+  constructor(private formBuilder: FormBuilder, private router:Router,private service:CreatebookService,private service1:PersonService,private route :ActivatedRoute,private navig:Router,private toastr:ToastrService) { }
 
   @ViewChild(FormGroupDirective) myForm:any;
   formGroup!: FormGroup;
@@ -34,7 +35,8 @@ export class BookrentedComponent implements OnInit {
   post: any = '';
 allbook:any;
 allperson:any;
-
+changeonassign:boolean = true;
+changeonassigndata:any;
   ngOnInit() {
   this.id = this.route.snapshot.params['id'];
   
@@ -44,9 +46,11 @@ allperson:any;
     console.log(this.route.snapshot.data['data'])
     console.log(this.route.snapshot.data)
     // this.service.RentedBookByID(+this.id).subscribe((val)=>{
-    if(this.route.snapshot.data['data'] != null)
+    if(this.route.snapshot.data['data'])
     {
-    this.createForm();
+    // this.createForm();
+    this.changeonassigndata = this.id;
+    this.changeonassign = false;
     this.posts = this.route.snapshot.data['data'];
    
     // console.log( typeof this.posts[0].publishDate)
@@ -64,7 +68,7 @@ allperson:any;
       })
     }
     else{
-      // console.log('hello')
+      console.log('hello')
    this.navig.navigate(['home/dashboard'])
     }
     // })
@@ -79,6 +83,7 @@ allperson:any;
     // });    
   }
   else{
+    this.changeonassign =true;
     this.service.fetchrentedBook().subscribe((data:any) => {
       console.log(data);
       this.posts = data;
@@ -130,7 +135,15 @@ allperson:any;
    }
 
    navigatetoassign(){
+    if(!this.changeonassign)
+    {
+      this.router.navigate(['home/booktrack/assignbook/'+this.changeonassigndata])
+    }
+    else{
+
+    
     this.router.navigate(['home/booktrack/assignbook'])
+    }
    }
 
    navigateto(data:any){
@@ -204,9 +217,14 @@ nostock:any = false;
     
    this.service.RenteBook(this.post).subscribe((val)=>{
 
-    console.log(val);  
+    console.log(val+'<<<<');  
+    if(val)
+    {
+      this.toastr.success('Success', 'Message');
+    }
    if(!val)
    {
+    this.toastr.warning('Failed', 'Alert');
     this.nostock = true;
    }
   
@@ -240,17 +258,30 @@ if (this.myForm) {
 
 updatevalue(row:any){
   const today  = new Date(); 
+  this.post = {
+    "trackId":row.trackId,
+    "actualReturnDate": today,
+    "bookId": row.bookId.bookId,
+    "expectedReturnDate": row.expectedReturnDate,
+    "personId": row.personId.id,
+    "startDate": row.startDate,
+    
+  
+};
   console.log(row.trackId)
+  console.log(row);
   if(row.actualReturnDate === null)
   {
   console.log(  row.actualReturnDate)
   row.actualReturnDate = today;
-  console.log(  row.actualReturnDate)
-  this.service.returnissuebook(row).subscribe((val)=>{
+  console.log(  this.post)
+  this.service.returnissuebook(this.post).subscribe((val)=>{
 
     this.service.fetchrentedBook().subscribe((data:any) => {
-      console.log(data);
+      // console.log(data+'<<<<<<<');
       this.posts = data;
+      this.toastr.success('Success', 'Message');
+
    
       // console.log( typeof this.posts[0].publishDate)
       // Assign the data to the data source for the table to render
@@ -276,9 +307,9 @@ updatevalue(row:any){
 
 
 
-  navigatetoupdate(){
-this.router.navigate(['home/booktrack'])
-  }
+//   navigatetoupdate(){
+// this.router.navigate(['home/booktrack'])
+//   }
 
   /////////////////////////////////
   applyFilter(event: Event) {

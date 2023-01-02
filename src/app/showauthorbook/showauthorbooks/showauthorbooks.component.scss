@@ -6,7 +6,9 @@ table {
     font-size: 14px;
     width: 20%;
   }
-  
+  .mat-header-row::ng-deep {
+    background-color: gray;
+  }
   
   .add{
     float: right;

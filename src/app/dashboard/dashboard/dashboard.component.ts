@@ -12,8 +12,9 @@ import { DashboardService } from '../dashboard.service';
 })
 export class DashboardComponent implements OnInit {
   // minDate: Moment;
+ 
   // maxDate: Moment;
-  displayedColumns: string[] = [ 'bookName', 'authorName', 'AvavilableStock','RentedBooks','Overdue'];
+  displayedColumns: string[] = [ 'title', 'authorname', 'availableStock','rented','overdue'];
   dataSource!: MatTableDataSource<any>;
   posts:any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -26,7 +27,7 @@ export class DashboardComponent implements OnInit {
       // console.log(data);
       this.posts = data;
    
-      console.log(data.bookId)
+      console.log(data)
       // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.posts);
 
@@ -41,7 +42,7 @@ export class DashboardComponent implements OnInit {
       let filterFunction = 
           (data: any, filter: string): boolean => {
             if (filter) {
-              const subjects = data.bookName;
+              const subjects = data.bookName.toLowerCase();
               // console.log(filter)
               // console.log(subjects);
               // console.log(subjects[0])

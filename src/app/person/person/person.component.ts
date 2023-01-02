@@ -19,7 +19,7 @@ export class PersonComponent implements OnInit {
   post: any = '';
 
 
-  displayedColumns: string[] = [ 'personDob', 'personName', 'personAddress','RentedBooks','Overdue','update'];
+  displayedColumns: string[] = [ 'personName', 'personDob', 'personAddress','RentedBooks','Overdue','update'];
   dataSource!: MatTableDataSource<any>;
   posts:any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -45,7 +45,7 @@ export class PersonComponent implements OnInit {
   }
 
   navigatetoupdate(){
-    this.route.navigate(['home/addperson/create'])
+    this.route.navigate(['home/person/create'])
       }
 //////////////////////////////////////////////////////////////
   createForm() {
@@ -91,7 +91,7 @@ export class PersonComponent implements OnInit {
   first:string = ''
   naviagtetobook(id:any,data:any){
 
-    this.route.navigate(['home/addperson/update/'+id]);
+    this.route.navigate(['home/person/update/'+id]);
   }
 
   updatevalue(row:any){

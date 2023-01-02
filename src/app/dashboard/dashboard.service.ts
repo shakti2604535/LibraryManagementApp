@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { LoginService } from '../login/login.service';
 
 @Injectable({
@@ -20,6 +21,6 @@ export class DashboardService {
     // let headers = new Headers({ 'Authorization': 'Bearer ' + this.login.token });
     console.log(this.login.token)
     // console.log(this.httpOptions)
-  return  this.http.get('http://localhost:8080/books/books');
+  return  this.http.get(environment.apiServer +'books/rented');
   }
 }

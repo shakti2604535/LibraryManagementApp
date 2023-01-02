@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,21 +11,21 @@ export class PersonService {
 
   fetchpersonbyId(data:any)
   {
-                return this.http.get('http://localhost:8080/get/person/'+data)
+                return this.http.get(environment.apiServer +'get/person/'+data)
   }
   fetchposts(){
    
     
-    return  this.http.get('http://localhost:8080/get/personsdetail');
+    return  this.http.get(environment.apiServer +'get/personsdetail');
     }
 
     Createbook(postData:any){
       console.log(postData)
-     return  this.http.post('http://localhost:8080/get/addperson',postData)
+     return  this.http.post(environment.apiServer +'get/addperson',postData)
     }
     updateperson(postData:any){
       
-      return this.http.put('http://localhost:8080/get/updateperson/'+postData.personId,postData)
+      return this.http.put(environment.apiServer +'get/updateperson/'+postData.personId,postData)
     }
   
 }

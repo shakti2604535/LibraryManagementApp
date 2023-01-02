@@ -64,8 +64,11 @@
         overflow: hidden;
         margin: 20px;
         height: 40px;
-        
+     
     
+      }
+      .mat-header-row::ng-deep {
+        background-color: gray;
       }
       .changecursor:hover{
         cursor: pointer;

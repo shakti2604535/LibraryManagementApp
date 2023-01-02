@@ -14,11 +14,11 @@ export class AuthorService {
     }
     Createbook(postData:any){
       console.log(postData)
-     return  this.http.post('http://localhost:8080/author/addauthor',postData)
+     return  this.http.post('http://localhost:8080/author/create',postData)
     }
     updateauthor(postData:any){
       
-      return this.http.put('http://localhost:8080/author/authorbyid/'+postData.authorid,postData)
+      return this.http.put('http://localhost:8080/author/update/'+postData.authorid,postData)
 
     }
     updateposts(postData:any){
@@ -27,7 +27,7 @@ export class AuthorService {
 
     }
     fetchbyId(id:any){
-      return this.http.get('http://localhost:8080/author/author/'+id);
+      return this.http.get('http://localhost:8080/author/'+id);
     }
     
 }

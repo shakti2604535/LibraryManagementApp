@@ -18,7 +18,7 @@ const routes: Routes = [
     { path: 'dashboard', loadChildren: () => import('src/app/dashboard/dashboard.module').then(m => m.DashboardModule) },
     { path: 'booktrack', loadChildren: () => import('src/app/books/books.module').then(m => m.BooksModule)},
     // { path: 'createbook/:id', loadChildren: () => import('src/app/books/books.module').then(m => m.BooksModule)},
-    { path: 'addperson', loadChildren: () => import('src/app/person/person.module').then(m => m.PersonModule)},
+    { path: 'person', loadChildren: () => import('src/app/person/person.module').then(m => m.PersonModule)},
     { path: 'addauthor', loadChildren: () => import('src/app/author/author.module').then(m => m.AuthorModule)},
     {path:'showauthorbooks',loadChildren:() => import('src/app/showauthorbook/showauthorbook.module').then(m=>m.ShowauthorbookModule)}
 ]},

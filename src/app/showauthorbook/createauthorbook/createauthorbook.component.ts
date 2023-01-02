@@ -1,7 +1,9 @@
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthorService } from 'src/app/author/author.service';
 import { CreatebookService } from 'src/app/books/createbook.service';
 import { ShowauthorbooksService } from '../showauthorbooks.service';
@@ -16,15 +18,22 @@ export class CreateauthorbookComponent implements OnInit {
   heading:string='Add Book to library'
   button:string='Submit'
   author:any;
+  errors:any;
   filteredOptions:any;
   formGroup!: FormGroup;
   bid:any;
   aid:any;
   val1:any;
   update:boolean = false;
-  constructor(private service1:AuthorService, private service2:CreatebookService,private datepipe: DatePipe,private formBuilder: FormBuilder,private service:ShowauthorbooksService,private route:ActivatedRoute,private navig:Router,) { }
+  onresetchange:boolean = true;
+  onresetdatachange:any;
+
+
+  constructor(private service1:AuthorService, private service2:CreatebookService,private datepipe: DatePipe,private formBuilder: FormBuilder,private service:ShowauthorbooksService,private route:ActivatedRoute,private navig:Router,private toastr: ToastrService) { }
 
   ngOnInit(): void {
+
+    
    console.log( this.route.snapshot.data['data'])
     this.service1.fetchposts().subscribe((val:any)=>{
       this.author = val;
@@ -42,6 +51,7 @@ export class CreateauthorbookComponent implements OnInit {
       this.val1 = this.route.snapshot.data['data']
       if(this.val1)
       {
+        this.onresetchange = false;
       console.log(this.val1)
         this.heading='update book';
         this.button='update'
@@ -53,7 +63,7 @@ export class CreateauthorbookComponent implements OnInit {
         'title': [this.val1.title, [Validators.required,Validators.minLength(5),Validators.maxLength(20)]],
         'description': [this.val1.description, [Validators.required,Validators.minLength(5)]],
         'pageCount': [this.val1.pageCount, [Validators.required,Validators.min(50) ]],
-        'publishDate': [curr, [Validators.required,,this.RangeValidator()]],
+        'publishDate': [curr, [Validators.required,this.RangeValidator()]],
         'availableStock': [this.val1.availableStock, [Validators.required,Validators.min(2)]],
         'authorid':[{ value:  this.val1.firstname+" "+this.val1.lastname , disabled: true }, Validators.required]
   
@@ -61,6 +71,7 @@ export class CreateauthorbookComponent implements OnInit {
       });
     }
     else{
+      this.toastr.error('No Data Found')
       this.navig.navigate(['home/showauthorbooks'])
     }
       // this.formGroup.get('authorid')?.valueChanges.subscribe((res1)=>{
@@ -71,6 +82,7 @@ export class CreateauthorbookComponent implements OnInit {
     // })
    }
    else{
+    // this.onresetchange  =
 
   this.createForm()
 
@@ -84,8 +96,8 @@ export class CreateauthorbookComponent implements OnInit {
       
       'title': [null, [Validators.required,Validators.minLength(5),Validators.maxLength(20)]],
       'description': [null, [Validators.required,Validators.minLength(5)]],
-      'pageCount': [null, [Validators.required,Validators.min(50) ]],
-      'publishDate': [null, [Validators.required,,this.RangeValidator()]],
+      'pageCount': [null, [Validators.required,Validators.min(100) ]],
+      'publishDate': [null, [Validators.required,this.RangeValidator()]],
       'availableStock': [null, [Validators.required,Validators.min(2)]],
       'authorid':[null,Validators.required],
       'validate': ''
@@ -115,7 +127,7 @@ export class CreateauthorbookComponent implements OnInit {
   }
   getPagecountError() {
     return this.formGroup!.get('pageCount')!.hasError('required') ? 'Field is required' :
-    this.formGroup!.get('pageCount')!.hasError('min') ? 'Enter Valid page' :'';
+    this.formGroup!.get('pageCount')!.hasError('min') ? 'Enter Valid Count' :'';
   }
   getAvailableStockError() {
     return this.formGroup!.get('availableStock')!.hasError('required') ? 'Field is required' :
@@ -181,7 +193,26 @@ export class CreateauthorbookComponent implements OnInit {
   }
  resetit(){
   // this.myForm.resetForm();
-  this.navig.navigate(['home/create'])
+if(this.onresetchange)
+{
+  this.myForm.resetForm()
+}
+else{
+  const curr = this.datepipe.transform(this.val1.publishDate, 'yyyy-MM-dd')
+ 
+  this.formGroup = this.formBuilder.group({
+     'bookId':[this.val1.bookId],
+    'title': [this.val1.title, [Validators.required,Validators.minLength(5),Validators.maxLength(20)]],
+    'description': [this.val1.description, [Validators.required,Validators.minLength(5)]],
+    'pageCount': [this.val1.pageCount, [Validators.required,Validators.min(50) ]],
+    'publishDate': [curr, [Validators.required,this.RangeValidator()]],
+    'availableStock': [this.val1.availableStock, [Validators.required,Validators.min(2)]],
+    'authorid':[{ value:  this.val1.firstname+" "+this.val1.lastname , disabled: true }, Validators.required]
+
+   
+  });
+}
+  
   // this.createForm()
   // this.heading='Add Book to library'
   // this.button='Submit'
@@ -193,19 +224,51 @@ export class CreateauthorbookComponent implements OnInit {
   {
     console.log(data)
     if(!this.update){
-    this.service.createnewbook(data).subscribe();
-    this.myForm.resetForm();
+    this.service.createnewbook(data).subscribe((val:any)=>{
+           if(val == true)
+           {
+            this.toastr.success('Success', 'Message');
+            this.myForm.resetForm();
+           }
+           if(val == false)
+           {
+            this.toastr.error('Book Already Exist', 'Alert');
+           }
+    },(err: HttpErrorResponse) => {
+      if (err.status === 404) {
+        this.toastr.error('failed', "resource not found");
+      }
+      else{
+        // console.log(err)
+        this.errors=Object.values(err.error);
+        this.toastr.error('failed', this.errors);
+      }
+    });
+   
     }
     else{
       
       this.service2.updateposts(data).subscribe((val:any)=>{
-        console.log(val);
+        // console.log(val);
         if(val != null)
         {
+          this.toastr.success('Success', 'Message');
          this.heading='Add Book to library'
          this.button='Submit'
           this.myForm.resetForm();
           this.navig.navigate(['home/showauthorbooks'])
+        }
+        else{
+          this.toastr.success('Failed', 'Alert');
+        }
+      },(err: HttpErrorResponse) => {
+        if (err.status === 404) {
+          this.toastr.error('failed', "resource not found");
+        }
+        else{
+          // console.log(err)
+          this.errors=Object.values(err.error);
+          this.toastr.error('failed', this.errors);
         }
       })
     }

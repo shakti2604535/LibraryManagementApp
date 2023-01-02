@@ -67,6 +67,9 @@
         
     
       }
+      .mat-header-row::ng-deep {
+        background-color: gray;
+      }
       .Reset{
         width: 500px;
         height: 40px;

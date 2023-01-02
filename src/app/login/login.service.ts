@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +24,22 @@ isAuthenticated() {
   return promise;
 }
  
+
 login(data:any) {
   this.logginstatus = true;
   this.token = data;
   sessionStorage.setItem('token', this.token);
+  // sessionStorage.setItem('timer', 'Date.now()')
   // localStorage.setItem('logginstatus', 'Y');
 }
+
+autologout(expire:number)
+{
+  setTimeout(() => {
+    this.logout()
+  }, 1000);
+}
+
 
 logout() {
   // this.logginstatus = false;
@@ -52,14 +63,14 @@ logout() {
   fetchposts(user:string){
    
     
-  return  this.http.get('http://localhost:8080/get/librarian/'+user);
+  return  this.http.get(environment.apiServer +'get/librarian/'+user);
   }
 
   createlibrarian(data:any){
-    return  this.http.post('http://localhost:8080/newlibr',data);
+    return  this.http.post(environment.apiServer +'newlibr',data);
   }
   fetchpost(user:any){
-    return this.http.post('http://localhost:8080/authenticate',user)
+    return this.http.post(environment.apiServer +'authenticate',user)
   }
   
 }
